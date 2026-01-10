@@ -2,82 +2,141 @@
 import React from 'react';
 
 const Skills: React.FC = () => {
-  const coreCompetencies = [
-    { name: "UI/UX Design", icon: "palette", primary: true },
-    { name: "Front-end Dev", icon: "code" },
-    { name: "Interaction Design", icon: "animation" },
-    { name: "Motion Graphics", icon: "rocket_launch" },
-  ];
-
-  const secondarySkills = ["React", "Three.js / WebGL", "Tailwind CSS", "TypeScript", "Node.js", "Design Systems", "Prototyping", "Blender 3D"];
-
-  const toolset = [
-    { name: "Figma", desc: "Primary tool for UI/UX and rapid prototyping.", icon: "design_services", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAyRqa_8KC3AV6h_Ju2jmdblpSLNtIfHKJmoaOqtdlyIeAOb5hLb9Puf-n2t26sL5D1LrX1MonUbd0E6tSaCqnyn1FyLjly-SjUXmolWtjyaIJMptfnS9_-dvWpd6Cipu0hQnl8KQ2hTnuZJBEOPxfkEt6N2rffb8Rs0svjkPw3a1Wx4PA1eStm2q55mMFlqDkxdtRcHqpe3x71it4jGYfIUkfQ92e-Qzb9YnQ1hzUxY0R8FiBSGVDMGlS4nCnk7DAnkbcMMPS-TJge" },
-    { name: "React", desc: "Building complex, interactive web applications.", icon: "code_blocks", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDDvfXqKnOq0N2zjo82UA1STlnUIIfY2Ho8L2hKx0jx2n4l9hBph41xfSmFYdj7yzjeovjOYpvIKRwRJNvT_mZepl-iuT4zEsuKecvXpgg4_NNhc-1k394tNR_q2wisSU0UjRTL5cbyOIfJP81CX-roRNOwi9DGL0FW5rX15sQkXXy8BhbxMJWvzjHN8nJ92WbeiOmJVwQxGFddYCfvqv56lwPLbJ2HaTGcH8t9mny0S8F6Rux6hTPSJNXvcw64cI7eXc0o2UFvYQsf" },
-    { name: "After Effects", desc: "Advanced motion graphics and Lottie animations.", icon: "movie_filter", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBxltNUChUREigNs5lJYYn8WKp4UjSmantVcbbvGERq1d75IGiRzwq59Svl5tSNZucbtpkWjZ7NwSVnjg2PnERnYEqZc23EZ-IJxlYDVPYzwbBf-HdsFFGTN6dW_TXGQUBpz3K8PdumY0iTNr58Q6f0PRbLZR2v_KwfZ0tI2zlvIz0x1oNPs8K7SZBIzpQwnweEed-UKv2eNaFlz2ECTyG4Z71SEpve6B5jKUhDrrf8zihhsJb7N_hx_ENF5GRwLTWpUx5nf5LvZYJr" },
+  const tools = [
+    {
+      name: "Blender",
+      desc: "Modeling, animation, and node-based compositing.",
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Blender_logo_no_text.svg/2560px-Blender_logo_no_text.svg.png",
+      tags: ['Geometry Nodes', 'Cycles X', 'Hard Surface'],
+      progress: '95%'
+    },
+    {
+      name: "Unreal Engine 5",
+      desc: "Real-time rendering, blueprints, and virtual production.",
+      img: "/Unreal Engine.png",
+      tags: ['Blueprints', 'Lumen', 'Niagara'],
+      progress: '90%'
+    },
+    {
+      name: "ZBrush",
+      desc: "Digital sculpting and high-poly character creation.",
+      img: "/ZBrush_icon.svg",
+      tags: ['Sculpting', 'Dynamesh', 'Polypaint'],
+      progress: '85%'
+    },
+    {
+      name: "Substance Painter",
+      desc: "Advanced texturing and material creation.",
+      img: "/substance-3d-painter-64.svg",
+      tags: ['PBR', 'Smart Materials', 'Baking'],
+      progress: '90%'
+    },
+    {
+      name: "3Ds Max",
+      desc: "Professional 3D modeling and rendering.",
+      img: "/3ds-max.svg",
+      tags: ['Modeling', 'UV Mapping', 'Arnold'],
+      progress: '80%'
+    },
+    {
+      name: "Marmoset Toolbag",
+      desc: "Real-time lookdev, baking, and rendering.",
+      img: "/Marmoset.png",
+      tags: ['Baking', 'RTX Rendering', 'Lookdev'],
+      progress: '85%'
+    },
+    {
+      name: "Rizom UV",
+      desc: "Industrial strength UV mapping and unfolding.",
+      img: "/Rizom UV.svg",
+      tags: ['Unwrap', 'Packing', 'Optimization'],
+      progress: '90%'
+    },
+    {
+      name: "Photoshop",
+      desc: "Post-processing, texturing, and matte painting.",
+      img: "/Adobe-Photoshop-Logo.png",
+      tags: ['Compositing', 'Textures', 'Post'],
+      progress: '95%'
+    },
   ];
 
   return (
-    <div className="max-w-[1400px] mx-auto px-6 lg:px-20 py-12">
-      <section className="flex flex-col gap-6 mb-16">
-        <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-black leading-[0.9] tracking-[-0.033em]">
-          Expertise <br/><span className="text-primary/90">& Toolset.</span>
-        </h1>
-        <p className="text-accent-text text-lg md:text-xl max-w-md leading-relaxed">
-          Bridging the gap between aesthetic purity and functional code. My approach combines brutalist layouts with refined interactions.
-        </p>
-      </section>
+    <div className="min-h-screen w-full pt-32 px-6 md:px-20 pb-24 overflow-y-auto no-scrollbar">
 
-      <section className="mb-20">
-        <h3 className="text-white/40 text-xs font-bold uppercase tracking-widest mb-8 ml-1">Core Competencies</h3>
-        <div className="flex flex-wrap gap-4">
-          {coreCompetencies.map((skill) => (
-            <div 
-              key={skill.name} 
-              className={`group flex h-12 md:h-14 shrink-0 items-center justify-center gap-x-3 rounded-full px-6 md:px-8 border transition-all duration-300 cursor-default
-                ${skill.primary ? 'bg-white text-background-dark border-white hover:bg-primary hover:border-primary' : 'bg-surface text-white border-white/5 hover:border-primary/50 hover:bg-surface/80'}`}
-            >
-              <span className={`material-symbols-outlined text-[20px] ${!skill.primary && 'text-primary'}`}>{skill.icon}</span>
-              <p className={`text-base md:text-lg font-bold`}>{skill.name}</p>
+      {/* Cinematic Header */}
+      <header className="mb-24">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-4 text-primary group cursor-default">
+              <span className="h-px w-12 bg-primary transition-all group-hover:w-20"></span>
+              <span className="text-[10px] font-bold tracking-[0.4em] uppercase italic">The Arsenal</span>
             </div>
-          ))}
-          {secondarySkills.map(skill => (
-            <div key={skill} className="flex h-12 md:h-14 shrink-0 items-center justify-center gap-x-2 rounded-full border border-white/10 px-5 hover:border-white/30 transition-colors cursor-default">
-              <p className="text-white/80 text-sm md:text-base font-medium">{skill}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <div className="flex items-center justify-between mb-8">
-          <h3 className="text-white/40 text-xs font-bold uppercase tracking-widest ml-1">Featured Toolset</h3>
-          <div className="flex gap-2">
-            <button className="size-8 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-background-dark transition-colors">
-              <span className="material-symbols-outlined text-sm">arrow_back</span>
-            </button>
-            <button className="size-8 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-background-dark transition-colors">
-              <span className="material-symbols-outlined text-sm">arrow_forward</span>
-            </button>
+            <h1 className="text-6xl md:text-9xl font-black tracking-tighter text-white leading-[0.8] uppercase">
+              DIGITAL <br />
+              <span className="text-white/20 font-black">WEAPONRY</span>
+            </h1>
+            <p className="text-white/40 text-sm md:text-lg max-w-xl font-medium leading-relaxed">
+              A specialized collection of industry-leading software utilized to define the next generation of 3D artistry and metaverse experiences.
+            </p>
           </div>
         </div>
-        <div className="flex overflow-x-auto no-scrollbar gap-6 pb-4">
-          {toolset.map((tool) => (
-            <div key={tool.name} className="group flex-none w-[300px] aspect-[4/3] bg-surface rounded-xl p-6 flex flex-col justify-between border border-white/5 hover:border-primary/40 transition-all duration-300 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <span className="material-symbols-outlined text-6xl text-white">{tool.icon}</span>
+      </header>
+
+      {/* Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1920px] mx-auto">
+        {tools.map((tool, i) => (
+          <div key={tool.name} className="group relative h-[24rem] bg-white/[0.03] backdrop-blur-md rounded-[2.5rem] border border-white/10 p-8 flex flex-col justify-between overflow-hidden hover:border-primary/40 hover:shadow-[0_0_40px_rgba(6,249,241,0.05)] transition-all duration-700">
+
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+            {/* Top Section */}
+            <div className="relative z-10 space-y-6">
+              <div className="flex justify-between items-start">
+                <div className="p-4 bg-white/5 rounded-2xl backdrop-blur-xl group-hover:bg-white/10 transition-colors border border-white/5">
+                  <img src={tool.img} className="w-8 h-8 object-contain grayscale brightness-200 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500" alt={tool.name} />
+                </div>
               </div>
-              <div className="size-12 rounded-lg bg-white/10 flex items-center justify-center mb-4 backdrop-blur-md">
-                <div className="w-full h-full bg-center bg-contain bg-no-repeat p-2" style={{backgroundImage: `url("${tool.img}")`}}></div>
+
+              <div className="space-y-2">
+                <h3 className="text-2xl font-black text-white tracking-tight group-hover:text-primary transition-colors">{tool.name}</h3>
+                <p className="text-white/40 text-xs leading-relaxed line-clamp-2 font-medium">{tool.desc}</p>
               </div>
-              <div>
-                <h4 className="text-white text-xl font-bold mb-1">{tool.name}</h4>
-                <p className="text-white/60 text-sm">{tool.desc}</p>
+
+              {/* Software Progress Bar */}
+              <div className="space-y-2 pt-2">
+                <div className="flex justify-between text-[9px] font-black uppercase tracking-[0.2em] text-white/20">
+                  <span>Mastery Level</span>
+                  <span className="text-primary italic">{tool.progress}</span>
+                </div>
+                <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
+                    style={{ width: tool.progress }}
+                  ></div>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* Bottom Section: Tags */}
+            <div className="relative z-10 flex flex-wrap gap-2 mt-6">
+              {tool.tags.map(tag => (
+                <span key={tag} className="px-3 py-1.5 bg-white/5 rounded-lg text-[9px] uppercase font-bold text-white/40 border border-white/5 group-hover:border-primary/20 group-hover:text-white transition-all">
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {/* Decorative Background Icon */}
+            <img
+              src={tool.img}
+              className="absolute -bottom-10 -right-10 w-48 h-48 object-contain opacity-[0.02] grayscale group-hover:grayscale-0 group-hover:opacity-[0.08] transition-all duration-1000 rotate-12 group-hover:rotate-0 group-hover:scale-110 pointer-events-none"
+              alt=""
+            />
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 };

@@ -3,82 +3,153 @@ import React from 'react';
 
 const About: React.FC = () => {
   return (
-    <div className="max-w-[1400px] mx-auto px-6 lg:px-20">
-      <section className="py-16 md:py-24 lg:py-32 grid gap-12 lg:grid-cols-2 items-center">
-        <div className="flex flex-col gap-8 order-2 lg:order-1">
-          <h1 className="text-5xl font-extrabold leading-[1.1] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
-            Designing <br/><span className="text-primary">The Future.</span>
-          </h1>
-          <p className="max-w-[600px] text-lg text-slate-400 md:text-xl leading-relaxed">
-            I’m John, a Product Designer based in Paris. I craft digital experiences that matter, blending aesthetics with functionality to solve real problems.
-          </p>
-          <div className="flex flex-wrap gap-4 pt-4">
-            <button className="h-14 rounded-full bg-primary px-8 text-base font-bold text-background-dark hover:bg-primary/90 transition-transform hover:scale-105">Download CV</button>
-            <button className="h-14 rounded-full border border-white/20 bg-transparent px-8 text-base font-bold text-white hover:bg-white/5 transition-colors">View Portfolio</button>
+    <div className="w-full min-h-screen px-6 lg:px-20 pt-32 pb-32 overflow-y-auto no-scrollbar">
+
+      {/* Editorial Hero */}
+      <section className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center mb-48">
+        <div className="w-full lg:w-1/2 flex flex-col justify-between py-10">
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-4 text-primary group cursor-default">
+              <span className="h-px w-12 bg-primary transition-all group-hover:w-20"></span>
+              <span className="text-[10px] font-bold tracking-[0.4em] uppercase italic">The Artist</span>
+            </div>
+
+            <h1 className="text-7xl md:text-9xl font-black text-white leading-[0.9] tracking-tighter uppercase">
+              FAIZAN <br />
+              <span className="text-white/10">ELLAHI</span>
+            </h1>
+
+            <p className="text-xl text-white/60 leading-relaxed max-w-xl font-medium">
+              A digital architect specializing in <span className="text-white">high-fidelity 3D modeling</span>, immersive meta-environments, and cinematic motion design.
+              I bridge the gap between technical precision and artistic imagination.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-8 lg:gap-16 pt-12 border-t border-white/5">
+            <div>
+              <span className="text-5xl md:text-7xl font-black text-white leading-none block mb-2">03<span className="text-primary text-xl">+</span></span>
+              <span className="text-[10px] font-bold text-white/30 tracking-[0.3em] uppercase">Years Exp.</span>
+            </div>
+            <div>
+              <span className="text-5xl md:text-7xl font-black text-white leading-none block mb-2">25<span className="text-primary text-xl">+</span></span>
+              <span className="text-[10px] font-bold text-white/30 tracking-[0.3em] uppercase">Projects</span>
+            </div>
           </div>
         </div>
-        <div className="relative order-1 lg:order-2 flex justify-center lg:justify-end">
-          <div className="relative aspect-[3/4] w-full max-w-[460px] overflow-hidden rounded-[3rem] border border-white/10 bg-surface group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <div className="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDuD-MGqwz1Tt3R9q0wlhZgW1yv1pPjHskcrgYf3SH2vp2LdgX1wRdU_R_Lt4GbBoyTMoIN3cj_A8p7YhKneEdQjuYWy9YXMF1xTXsh1EK830k6dOmqKjK_zIZ9vlTz6tCBafEAUBiAjsa03_Pp-t6N71wlsaZI14FBPYeAOLAQlG4_2q42EbT6degSYDECCgX7VOqbtrB68Y0c9qfUeGq_f7MO0dJEnD1hfzK7I7mA_0IhADiyaX_39uau5Q1KaTNtcRSnlcSD3tz0")'}}></div>
-            <div className="absolute bottom-8 left-8 right-8 rounded-2xl bg-background-dark/80 backdrop-blur-md p-4 border border-white/10 flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
-                <span className="material-symbols-outlined">location_on</span>
-              </div>
-              <div><p className="text-xs text-slate-400 uppercase tracking-wider">Based in</p><p className="font-bold text-white">Paris, France</p></div>
+
+        <div className="w-full lg:w-1/2 flex justify-end">
+          <div className="relative aspect-[4/5] w-full max-w-[800px] rounded-[3rem] overflow-hidden border border-white/10 group shadow-2xl shadow-primary/5">
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
+            <img src="/My self.png" className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-1000 scale-105 group-hover:scale-100" alt="Faizan Ellahi" />
+
+            <div className="absolute bottom-12 left-12 z-20 space-y-2">
+              <span className="text-[10px] font-bold text-primary tracking-[0.3em] uppercase">Current Location</span>
+              <p className="text-3xl font-black text-white tracking-tighter">PAKISTAN, PK</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-20 max-w-4xl mx-auto">
-        <div className="mb-12 flex items-center gap-2 text-primary">
-          <span className="material-symbols-outlined">auto_stories</span>
-          <span className="text-sm font-bold uppercase tracking-widest">My Story</span>
+      {/* Services Section - Minimalist Cards */}
+      <section className="mb-48">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-10">
+          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter">DIGITAL <br /><span className="text-white/20">CAPABILITIES</span></h2>
+          <p className="text-white/40 max-w-sm text-[11px] leading-loose tracking-[0.1em] uppercase font-bold text-right italic">
+            From conceptual digital sculpting to real-time rendering in high-fidelity engines.
+          </p>
         </div>
-        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr]">
-          <div className="space-y-6 text-slate-400 text-lg leading-relaxed">
-            <h3 className="text-3xl font-bold text-white md:text-4xl">From pixels to people.</h3>
-            <p>My journey started with a curiosity for how things work. Over the last <span className="text-primary font-medium">5+ years</span>, I've translated that curiosity into a career crafting digital products used by millions.</p>
-            <p>I believe that great design is invisible. It's about removing friction and creating pathways that feel natural.</p>
-          </div>
-          <div className="grid grid-cols-1 gap-4 h-fit">
-            <StatCard value="5+" label="Years Experience" />
-            <StatCard value="30+" label="Projects Shipped" />
-            <StatCard value="12+" label="Happy Clients" />
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-1px bg-white/5 rounded-[3rem] overflow-hidden border border-white/10">
+          <CapabilityCard
+            num="01"
+            title="3D Modeling"
+            desc="Hard-surface and organic modeling focused on topology optimization and silhouette."
+            tools={['Blender', 'Zbrush', '3Ds Max']}
+          />
+          <CapabilityCard
+            num="02"
+            title="Texturing"
+            desc="PBR material creation with physically accurate bakes and procedural adjustments."
+            tools={['Substance', 'Photoshop', 'Marmoset']}
+          />
+          <CapabilityCard
+            num="03"
+            title="Environments"
+            desc="Large-scale world building for metaverses and real-time interactive experiences."
+            tools={['Unreal Engine 5', 'TCCM']}
+          />
+        </div>
+      </section>
+
+      {/* Experience Timeline */}
+      <section className="grid lg:grid-cols-12 gap-20 items-start mb-48">
+        <div className="lg:col-span-4 sticky top-40">
+          <h3 className="text-primary font-mono text-xs tracking-[0.5em] uppercase mb-8">Career Journey</h3>
+          <p className="text-3xl font-black text-white tracking-tighter leading-tight">Crafting virtual realities at the intersection of tech and art.</p>
+        </div>
+
+        <div className="lg:col-span-8 space-y-12">
+          <ExperienceItem
+            year="2022 — PRE"
+            company="Narsun Studios"
+            role="Senior 3D Artist"
+            desc="Leading 3D production for the Cloud City Metaverse ecosystem. Focusing on high-fidelity asset creation and engine optimization."
+          />
+          <ExperienceItem
+            year="2021 — 2022"
+            company="Freelance"
+            role="3D Generalist"
+            desc="Collaborating with global clients on high-end Product Renders, Game Assets, and Architectural Visualization."
+          />
+        </div>
+      </section>
+
+      {/* Philosophy Quote */}
+      <section className="relative px-12 py-32 rounded-[4rem] bg-white/[0.05] backdrop-blur-xl border border-white/10 overflow-hidden group">
+        <div className="absolute -top-20 -right-20 opacity-[0.03] grayscale transition-all group-hover:opacity-10 pointer-events-none">
+          <span className="material-symbols-outlined text-[400px]">auto_awesome</span>
+        </div>
+
+        <div className="max-w-4xl relative z-10">
+          <span className="text-white/30 text-[10px] font-bold tracking-[0.4em] uppercase block mb-10 italic">Design Philosophy</span>
+          <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-[1.1] mb-12 italic">
+            "I thrive in the complexity of the digital realm, transforming abstract concepts into tangible visual experiences through relentless iteration and technical mastery."
+          </h2>
+          <div className="flex items-center gap-6">
+            <div className="h-0.5 w-12 bg-primary"></div>
+            <span className="font-bold text-white tracking-widest uppercase text-xs">FAIZAN ELAHI</span>
           </div>
         </div>
       </section>
 
-      <section className="py-20 max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold text-white md:text-4xl mb-12">Experience</h2>
-        <div className="space-y-6">
-          <JobItem role="Senior Product Designer" company="TechFlow Systems" loc="San Francisco (Remote)" year="2021 — Present" icon="token" />
-          <JobItem role="UI Designer" company="CreativeStudio" loc="London" year="2018 — 2021" icon="brush" />
-          <JobItem role="Junior Designer" company="StartUp Inc" loc="Paris" year="2016 — 2018" icon="rocket_launch" />
-        </div>
-      </section>
     </div>
   );
 };
 
-const StatCard: React.FC<{value: string, label: string}> = ({value, label}) => (
-  <div className="flex flex-col gap-1 rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-primary/50 transition-colors">
-    <span className="text-4xl font-bold text-white">{value}</span>
-    <span className="text-sm font-medium text-slate-400">{label}</span>
+const CapabilityCard: React.FC<{ num: string, title: string, desc: string, tools: string[] }> = ({ num, title, desc, tools }) => (
+  <div className="bg-white/[0.03] backdrop-blur-md p-12 transition-all hover:bg-white/5 group">
+    <span className="text-primary font-mono text-xs font-bold block mb-8 opacity-40 group-hover:opacity-100 transition-opacity">[{num}]</span>
+    <h3 className="text-3xl font-black text-white mb-6 tracking-tighter">{title}</h3>
+    <p className="text-white/40 text-sm leading-relaxed mb-10 group-hover:text-white/60 transition-colors">{desc}</p>
+    <div className="flex flex-wrap gap-2">
+      {tools.map(tool => (
+        <span key={tool} className="text-[9px] font-bold text-white/30 tracking-widest uppercase border border-white/10 px-2 py-1 rounded group-hover:border-primary/30 group-hover:text-primary transition-all">
+          {tool}
+        </span>
+      ))}
+    </div>
   </div>
 );
 
-const JobItem: React.FC<{role: string, company: string, loc: string, year: string, icon: string}> = ({role, company, loc, year, icon}) => (
-  <div className="group flex flex-col gap-4 rounded-3xl border border-white/10 bg-surface p-6 transition-all hover:border-primary/30 md:flex-row md:items-center md:gap-8 md:p-8">
-    <div className="flex h-16 w-16 min-w-[64px] items-center justify-center rounded-2xl bg-background-dark border border-white/5 text-white">
-      <span className="material-symbols-outlined text-3xl">{icon}</span>
+const ExperienceItem: React.FC<{ year: string, company: string, role: string, desc: string }> = ({ year, company, role, desc }) => (
+  <div className="group space-y-4">
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <h4 className="text-2xl font-black text-white tracking-tighter uppercase group-hover:text-primary transition-colors">{company}</h4>
+      <span className="text-[10px] font-bold text-white/20 tracking-[0.2em] uppercase font-mono">{year}</span>
     </div>
-    <div className="flex flex-1 flex-col gap-1">
-      <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{role}</h3>
-      <p className="text-base text-slate-400">{company} • {loc}</p>
-    </div>
-    <span className="rounded-full bg-white/5 px-3 py-1 text-xs font-bold text-white w-fit">{year}</span>
+    <p className="text-primary text-xs font-bold tracking-widest uppercase">{role}</p>
+    <p className="text-white/50 text-sm leading-relaxed max-w-2xl">{desc}</p>
+    <div className="h-px w-full bg-white/5 group-hover:bg-primary/20 transition-colors"></div>
   </div>
 );
 
