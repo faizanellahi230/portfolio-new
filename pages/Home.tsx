@@ -9,11 +9,15 @@ const Home: React.FC = () => {
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10"></div>
         {/* Removed additional black overlay to brighten the hero */}
-        <img
-          src="/Home_PAge.jpg"
-          alt="Hero Background"
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full h-full object-cover"
-        />
+        >
+          <source src="/video.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* Content */}

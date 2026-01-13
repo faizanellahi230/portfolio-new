@@ -1,19 +1,84 @@
-
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState('All');
-  const categories = ['All', 'UI/UX', 'Branding', 'Motion', 'Web3', 'Mobile', 'Design Systems'];
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+
+  const categories = ['All', '3D Scene', 'Character', 'Motion', 'Environment', 'Product'];
 
   const projects = [
-    { title: "Cloud City Metaverse", category: "Web3", desc: "A decentralized gaming platform allowing players to create, own, and build their presence in a borderless community.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBkBB358_6ao6UU36nYLRmBXUTSCfvIw4teLZIx7By73vNbWBa-lYGHJ3zRS5UvX68faCbodZ56-9nK6dCvsaVOAA5wPBlcVwJfs0uEkeUk1j1rasxqeiXSs3hmhSue3Hr38o2Wrolf2LHa24YX3S9eJPogNY4lfnzyOL57AQVXkb673Djgo15Itm8caaeHyVSF_q_eIFYhr84Ujusy1yiluJxh_fcTEwgZZLdOVBp3DSm2YTWawzCP3wGXK5mc-f3vvVxKSz6YrSAh" },
-    { title: "Tourism Metaverse", category: "Web3", desc: "Immersive experiences showcasing real-world destinations for virtual exploration.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDTNUk03sIWWXQnO45HGUFLZXgY5VN9WPEPM0T3PIZDy1zZV5Cyh0NnprSIs2RL4O37aytFDVmP0NvSUU1_sdaOm0K4HHBHvSBoOo5Igwro4KX4SMYxJibsSGcqv6o-HfhmJGWNLqZ55ygVbJkzntwx1w0ET3_NXZhr-oTijkn9kXpkqxd0Q5UWa-t9se1EZHzfd5HCATHRnOBDY-J-4NWXECZDWayR82YXGk15BkvaHy72AIQltR1cv09c3qlk-OHA975BSM6lNH_7" },
-    { title: "Neon Identity", category: "Branding", desc: "Comprehensive visual identity system for a next-gen lighting technology startup.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuA-F57Pw9iB-sHrgBgzXDqWyMdcAFtjZpIDT5ATpUh3bX_JJRmQF_mNVyr1SRCGfuFbhqO5J3K1wLzJdx-AbBC61wn3NbhvnySMF4cHZ-DnIEbHmY5UcNgv2K4I5zBaBdBuR6jSO6X2z5QgrcJInJG0djTqA8T4aCDWDPaxAd3bdeqYbhQrHmFXmY6sWLOqXIX-aMeiKuwWy-9SEy8KKaYIDjbaSedq9o4TwVXeqgJYiKVdUonVjyKZl1Aj5xA9wX3zTCE3-xzFLnYX" },
-    { title: "Crypto Wallet", category: "Web3", desc: "Secure and intuitive digital wallet design facilitating seamless crypto transactions.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAXgLI6pTaMxErxRVD_wtK9j909zJN9h3jPGDzbEK1s0hvfv3HRBDEL13B449sg7oWY8WZYxe_0EFyEURQSJv7BAsyiHKjLnI0ITIIP0i24YtkT6F39tC-1YaeWpug2VhgSTs7llLIRVFFhQ9_aFck6Gs91NWGWLjObrEf5Cx0blPo-1gYzUm8dlGr-aVsvoqEi6nvkMz8TjL20qH96-xGFajhXLwnJRVx04xKMe1c-LWFxE9f7p9DA4wxES0oNXdplhZJXJ08kpJR" },
-    { title: "HealthTrack Pro", category: "Mobile", desc: "A comprehensive health monitoring application for professional athletes.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBCDat6zu7Cwbz2CDB6CHDLSzjyaIJMdKGhPsZ0zgFmPfSR9UNugxzVdpF-gJSFkuHIxtXazr-h3P6eaBTLLH6jLjAdoGiEzpEx1s1qWH7ZFw8hMWHoT85D9Tz0RQ0hLnM7Th_dTpuH7izwVde7iAG4WkMRDqtxg7M81Pn-uvv486ZPvZaGnoPSB0Dj4uGnAYYp2ZW9fT-to_sFon75UMdCm61iTmrKTNmZuzipZQbHOXFBlcHWo2_aY9pKBqjMEC5I_aIlJqJUfpyO" },
-    { title: "Lumina Design", category: "Design Systems", desc: "A unified design language for Lumina's suite of enterprise products.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDv0LftO-cDkVzt0nbCGbYNg58Zu70T7TurogdK1o8Wv0mYdlbs-wp2_oflZL8ke5N4ADwOfccsxYB-m4zYxoH8xIN9DZj3qi8tTu2nrZzQphnPmneDlFbwg2jTbT76OoJLsgmkaV2CSECpYD_AGfv1LMrOdGZnqRlf1tiSl9FprAxcIPYyf2n6gXavqSp08LeEICv-7Uk91kPXzPHD7FVcxCYLVgwodpHYv5pJD765ZKoNK0VRdp0wXlRkfbYKHoK8nHes1lkGa7X7" },
-    { title: "Zenith Banking", category: "UI/UX", desc: "Next-generation banking experience with AI-powered financial insights.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDTNUk03sIWWXQnO45HGUFLZXgY5VN9WPEPM0T3PIZDy1zZV5Cyh0NnprSIs2RL4O37aytFDVmP0NvSUU1_sdaOm0K4HHBHvSBoOo5Igwro4KX4SMYxJibsSGcqv6o-HfhmJGWNLqZ55ygVbJkzntwx1w0ET3_NXZhr-oTijkn9kXpkqxd0Q5UWa-t9se1EZHzfd5HCATHRnOBDY-J-4NWXECZDWayR82YXGk15BkvaHy72AIQltR1cv09c3qlk-OHA975BSM6lNH_7" },
-    { title: "Apex Motion", category: "Motion", desc: "Showreel for a leading motion design agency featuring bold typography.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuB2win95UZ-enFMyApAANSb_9GYNPoUdWDxsEeS3B6odXoGwqeGohuyFgkZD8346D7ImHnWsXtD7gWZBxZ27mr2mkcgR9J1T1DbEVWPAQUtLuFDmZwtoZmtsz2aCIoH8sU053jdSacZiyAvwLi2u89aSlMFa5w7f-inF_4Wwi3auuM4LI-8pA06WZDd-wux0JFCL7RdNftePXFBosYxAeJxw2HH7EdoyeIxxk-H3sqQuBxNNoRq7cjdo2_Pzmyu9Ds3fNK3F0xRYY8S" },
+    {
+      title: "Cloud City Metaverse",
+      category: "Environment",
+      year: "2024",
+      client: "Narsun Studios",
+      role: "Lead 3D Artist",
+      desc: "A decentralized gaming platform allowing players to create, own, and build their presence in a borderless community.",
+      longDesc: "Cinema4D creation for DJ Snake and Bipolar Sunshine's live performance at the NRJ MUSIC AWARDS 2025. An immersive artistic direction aligned with the universe of the track 'Paradise', broadcast on set during the event.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBkBB358_6ao6UU36nYLRmBXUTSCfvIw4teLZIx7By73vNbWBa-lYGHJ3zRS5UvX68faCbodZ56-9nK6dCvsaVOAA5wPBlcVwJfs0uEkeUk1j1rasxqeiXSs3hmhSue3Hr38o2Wrolf2LHa24YX3S9eJPogNY4lfnzyOL57AQVXkb673Djgo15Itm8caaeHyVSF_q_eIFYhr84Ujusy1yiluJxh_fcTEwgZZLdOVBp3DSm2YTWawzCP3wGXK5mc-f3vvVxKSz6YrSAh",
+      video: "/video.mp4",
+      gallery: [
+        { type: 'image', url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDTNUk03sIWWXQnO45HGUFLZXgY5VN9WPEPM0T3PIZDy1zZV5Cyh0NnprSIs2RL4O37aytFDVmP0NvSUU1_sdaOm0K4HHBHvSBoOo5Igwro4KX4SMYxJibsSGcqv6o-HfhmJGWNLqZ55ygVbJkzntwx1w0ET3_NXZhr-oTijkn9kXpkqxd0Q5UWa-t9se1EZHzfd5HCATHRnOBDY-J-4NWXECZDWayR82YXGk15BkvaHy72AIQltR1cv09c3qlk-OHA975BSM6lNH_7' },
+        { type: 'video', url: '/video.mp4' },
+        { type: 'image', url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA-F57Pw9iB-sHrgBgzXDqWyMdcAFtjZpIDT5ATpUh3bX_JJRmQF_mNVyr1SRCGfuFbhqO5J3K1wLzJdx-AbBC61wn3NbhvnySMF4cHZ-DnIEbHmY5UcNgv2K4I5zBaBdBuR6jSO6X2z5QgrcJInJG0djTqA8T4aCDWDPaxAd3bdeqYbhQrHmFXmY6sWLOqXIX-aMeiKuwWy-9SEy8KKaYIDjbaSedq9o4TwVXeqgJYiKVdUonVjyKZl1Aj5xA9wX3zTCE3-xzFLnYX' }
+      ]
+    },
+    {
+      title: "DJ Snake Live Visuals",
+      category: "Motion",
+      year: "2025",
+      client: "NRJ Music",
+      role: "3D Creation",
+      desc: "Immersive 3D stage visuals for DJ Snake & Bipolar Sunshine at NRJ Music Awards.",
+      longDesc: "The project involved creating a high-fidelity emotional journey through 3D environments that react to the music's frequency and mood. Every step of the staircase represents a beat, leading to a celestial climax.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDTNUk03sIWWXQnO45HGUFLZXgY5VN9WPEPM0T3PIZDy1zZV5Cyh0NnprSIs2RL4O37aytFDVmP0NvSUU1_sdaOm0K4HHBHvSBoOo5Igwro4KX4SMYxJibsSGcqv6o-HfhmJGWNLqZ55ygVbJkzntwx1w0ET3_NXZhr-oTijkn9kXpkqxd0Q5UWa-t9se1EZHzfd5HCATHRnOBDY-J-4NWXECZDWayR82YXGk15BkvaHy72AIQltR1cv09c3qlk-OHA975BSM6lNH_7",
+      video: "/video.mp4",
+      gallery: [
+        { type: 'image', url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBkBB358_6ao6UU36nYLRmBXUTSCfvIw4teLZIx7By73vNbWBa-lYGHJ3zRS5UvX68faCbodZ56-9nK6dCvsaVOAA5wPBlcVwJfs0uEkeUk1j1rasxqeiXSs3hmhSue3Hr38o2Wrolf2LHa24YX3S9eJPogNY4lfnzyOL57AQVXkb673Djgo15Itm8caaeHyVSF_q_eIFYhr84Ujusy1yiluJxh_fcTEwgZZLdOVBp3DSm2YTWawzCP3wGXK5mc-f3vvVxKSz6YrSAh' },
+        { type: 'image', url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA-F57Pw9iB-sHrgBgzXDqWyMdcAFtjZpIDT5ATpUh3bX_JJRmQF_mNVyr1SRCGfuFbhqO5J3K1wLzJdx-AbBC61wn3NbhvnySMF4cHZ-DnIEbHmY5UcNgv2K4I5zBaBdBuR6jSO6X2z5QgrcJInJG0djTqA8T4aCDWDPaxAd3bdeqYbhQrHmFXmY6sWLOqXIX-aMeiKuwWy-9SEy8KKaYIDjbaSedq9o4TwVXeqgJYiKVdUonVjyKZl1Aj5xA9wX3zTCE3-xzFLnYX' }
+      ]
+    },
+    {
+      title: "Neon Identity",
+      category: "Branding",
+      year: "2024",
+      client: "Neon Tech",
+      role: "Art Director",
+      desc: "Comprehensive visual identity system for a next-gen lighting technology startup.",
+      longDesc: "Crafting a visual language that pulses with the energy of futuristic urban landscapes. The identity uses high-contrast glow effects and minimalist typography to establish a premium tech presence.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuA-F57Pw9iB-sHrgBgzXDqWyMdcAFtjZpIDT5ATpUh3bX_JJRmQF_mNVyr1SRCGfuFbhqO5J3K1wLzJdx-AbBC61wn3NbhvnySMF4cHZ-DnIEbHmY5UcNgv2K4I5zBaBdBuR6jSO6X2z5QgrcJInJG0djTqA8T4aCDWDPaxAd3bdeqYbhQrHmFXmY6sWLOqXIX-aMeiKuwWy-9SEy8KKaYIDjbaSedq9o4TwVXeqgJYiKVdUonVjyKZl1Aj5xA9wX3zTCE3-xzFLnYX"
+    },
+    {
+      title: "Cyberpunk Avatar",
+      category: "Character",
+      year: "2023",
+      client: "Meta-X",
+      role: "Character Artist",
+      desc: "High-fidelity digital human for next-gen metaverse interaction.",
+      longDesc: "Using ZBrush and Substance Painter, I developed this character with micro-detail skin textures and functional cyberpunk augmentations, optimized for real-time engine performance.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAXgLI6pTaMxErxRVD_wtK9j909zJN9h3jPGDzbEK1s0hvfv3HRBDEL13B449sg7oWY8WZYxe_0EFyEURQSJv7BAsyiHKjLnI0ITIIP0i24YtkT6F39tC-1YaeWpug2VhgSTs7llLIRVFFhQ9_aFck6Gs91NWGWLjObrEf5Cx0blPo-1gYzUm8dlGr-aVsvoqEi6nvkMz8TjL20qH96-xGFajhXLwnJRVx04xKMe1c-LWFxE9f7p9DA4wxES0oNXdplhZJXJ08kpJR"
+    },
+    {
+      title: "Luxury Watch Render",
+      category: "Product",
+      year: "2024",
+      client: "Zenith",
+      role: "3D Generalist",
+      desc: "Photorealistic product visualization for a limited edition luxury timepiece.",
+      longDesc: "Focusing on macro-photography aesthetics, this render highlights the intricate mechanical movements and material finishes, utilizing Redshift's high-end lighting capabilities.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBCDat6zu7Cwbz2CDB6CHDLSzjyaIJMdKGhPsZ0zgFmPfSR9UNugxzVdpF-gJSFkuHIxtXazr-h3P6eaBTLLH6jLjAdoGiEzpEx1s1qWH7ZFw8hMWHoT85D9Tz0RQ0hLnM7Th_dTpuH7izwVde7iAG4WkMRDqtxg7M81Pn-uvv486ZPvZaGnoPSB0Dj4uGnAYYp2ZW9fT-to_sFon75UMdCm61iTmrKTNmZuzipZQbHOXFBlcHWo2_aY9pKBqjMEC5I_aIlJqJUfpyO"
+    },
+    {
+      title: "Future Metropolis",
+      category: "Environment",
+      year: "2024",
+      client: "Studio 23",
+      role: "Env. Designer",
+      desc: "Large-scale world building for metaverses and real-time interactive experiences.",
+      longDesc: "A modular city-building kit designed for UE5, featuring dynamic lighting setups and procedural distribution of high-fidelity architectural assets.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDv0LftO-cDkVzt0nbCGbYNg58Zu70T7TurogdK1o8Wv0mYdlbs-wp2_oflZL8ke5N4ADwOfccsxYB-m4zYxoH8xIN9DZj3qi8tTu2nrZzQphnPmneDlFbwg2jTbT76OoJLsgmkaV2CSECpYD_AGfv1LMrOdGZnqRlf1tiSl9FprAxcIPYyf2n6gXavqSp08LeEICv-7Uk91kPXzPHD7FVcxCYLVgwodpHYv5pJD765ZKoNK0VRdp0wXlRkfbYKHoK8nHes1lkGa7X7"
+    }
   ];
 
   const filteredProjects = filter === 'All' ? projects : projects.filter(p => p.category === filter);
@@ -37,16 +102,16 @@ const Projects: React.FC = () => {
           <button
             key={cat}
             onClick={() => setFilter(cat)}
-            className={`h-12 px-8 rounded-full text-base font-bold transition-all whitespace-nowrap ${filter === cat ? 'bg-primary text-background-dark' : 'bg-surface border border-white/5 text-white/70 hover:text-white'}`}
+            className={`h-12 px-8 rounded-full text-base font-bold transition-all whitespace-nowrap ${filter === cat ? 'bg-primary text-background-dark' : 'bg-white/5 border border-white/10 text-white/70 hover:text-white backdrop-blur-sm'}`}
           >
             {cat}
           </button>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-20">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 pb-20">
         {filteredProjects.map((proj, i) => (
-          <article key={i} className="group relative w-full aspect-[4/3] bg-white/[0.03] backdrop-blur-md rounded-[2rem] border border-white/10 p-[20px] overflow-hidden transition-all hover:border-primary/50">
+          <article key={i} className="group relative w-full aspect-video bg-white/[0.03] backdrop-blur-md rounded-[3rem] border border-white/10 p-[24px] overflow-hidden transition-all hover:border-primary/50">
             {/* Year Stamp - Visible in the cut corner */}
             <div className="absolute top-8 right-8 z-0">
               <span className="text-white/40 font-mono text-sm tracking-widest">2024</span>
@@ -56,9 +121,9 @@ const Projects: React.FC = () => {
             <div
               className="relative h-full w-full overflow-hidden bg-white/5"
               style={{
-                clipPath: 'polygon(0 0, calc(100% - 130px) 0, calc(100% - 124px) 2px, calc(100% - 110px) 10px, 100% 120px, 100% 100%, 0 100%)',
-                borderRadius: '1rem 0 1rem 1rem',
-                WebkitClipPath: 'polygon(0 0, calc(100% - 135px) 0, calc(100% - 124px) 2px, calc(100% - 110px) 10px, calc(100% - 10px) 110px, calc(100% - 2px) 124px, 100% 135px, 100% 100%, 0 100%)'
+                clipPath: 'polygon(0 0, calc(100% - 160px) 0, calc(100% - 154px) 2px, calc(100% - 140px) 10px, 100% 150px, 100% 100%, 0 100%)',
+                borderRadius: '2rem 0 2rem 2rem',
+                WebkitClipPath: 'polygon(0 0, calc(100% - 165px) 0, calc(100% - 154px) 2px, calc(100% - 140px) 10px, calc(100% - 10px) 140px, calc(100% - 2px) 154px, 100% 165px, 100% 100%, 0 100%)'
               }}
             >
               <div className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url('${proj.img}')` }}></div>
@@ -74,7 +139,10 @@ const Projects: React.FC = () => {
                     <p className="text-primary font-bold tracking-widest text-xs uppercase">{proj.category}</p>
                   </div>
 
-                  <button className="h-12 px-6 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-all opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 duration-500 delay-75">
+                  <button
+                    onClick={() => setSelectedProject(proj)}
+                    className="h-12 px-6 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white font-bold text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-all opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 duration-500 delay-75"
+                  >
                     See Project
                   </button>
                 </div>
@@ -83,8 +151,134 @@ const Projects: React.FC = () => {
           </article>
         ))}
       </div>
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectOverlay
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
+
+const ProjectOverlay: React.FC<{ project: any, onClose: () => void }> = ({ project, onClose }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 z-[100] bg-black overflow-y-auto overflow-x-hidden no-scrollbar"
+  >
+    {/* Cinematic Hero Section - Fixed Height */}
+    <section className="relative w-full h-screen flex items-center overflow-hidden">
+      {/* Background Media - Anchored Left with Smooth Edge Blending */}
+      <div
+        className="absolute inset-y-0 left-0 w-full lg:w-[70%] z-0"
+        style={{
+          maskImage: 'linear-gradient(to right, black 40%, transparent 90%), linear-gradient(to top, transparent 0%, black 15%)',
+          WebkitMaskImage: 'linear-gradient(to right, black 40%, transparent 90%), linear-gradient(to top, transparent 0%, black 15%)',
+          maskComposite: 'intersect',
+          WebkitMaskComposite: 'source-in'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
+        {project.video ? (
+          <video autoPlay loop muted playsInline className="w-full h-full object-cover brightness-90">
+            <source src={project.video} type="video/mp4" />
+          </video>
+        ) : (
+          <div className="w-full h-full bg-cover bg-center brightness-90" style={{ backgroundImage: `url('${project.img}')` }}></div>
+        )}
+      </div>
+
+      {/* Hero Content - Strategically right-aligned for maximum readability */}
+      <div className="relative z-20 w-full h-full max-w-[1920px] mx-auto px-10 lg:px-24 py-20 flex flex-col lg:flex-row justify-between items-start">
+        {/* Back Button */}
+        <div className="pt-4 lg:pt-0">
+          <button
+            onClick={onClose}
+            className="h-14 w-14 rounded-full border border-white/10 bg-black/40 backdrop-blur-xl text-white flex items-center justify-center hover:bg-white hover:text-black transition-all group pointer-events-auto"
+          >
+            <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1">arrow_back</span>
+          </button>
+        </div>
+
+        <div className="w-full lg:max-w-2xl mt-12 lg:mt-0 lg:text-right space-y-12">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-4 text-primary lg:flex-row-reverse">
+              <span className="h-px w-12 bg-primary"></span>
+              <span className="text-[10px] font-bold tracking-[0.5em] uppercase">{project.category}</span>
+            </div>
+
+            <h2 className="text-6xl md:text-8xl lg:text-9xl font-black text-white leading-[0.85] tracking-tighter uppercase whitespace-pre-wrap">
+              {project.title}
+            </h2>
+
+            <p className="text-white/40 text-lg lg:text-xl leading-relaxed max-w-xl lg:ml-auto font-medium">
+              {project.longDesc || project.desc}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 border-t border-white/10 pt-10">
+            <MetaItem label="Date" value={project.year} />
+            <MetaItem label="Client" value={project.client} />
+            <MetaItem label="Role" value={project.role} />
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30 animate-pulse">
+        <span className="text-[10px] font-bold tracking-[0.3em] uppercase">Scroll to Explore</span>
+        <span className="h-12 w-px bg-white/50"></span>
+      </div>
+    </section>
+
+    {/* Project Gallery Section - Vertical Scrolling */}
+    <section className="relative z-10 w-full px-10 lg:px-24 py-32 space-y-24 bg-black">
+      <div className="max-w-5xl mx-auto space-y-24">
+        {project.gallery ? project.gallery.map((item: any, i: number) => (
+          <div
+            key={i}
+            className="relative rounded-[2.5rem] overflow-hidden border border-white/5 bg-white/[0.02] w-full"
+          >
+            {item.type === 'video' ? (
+              <video autoPlay loop muted playsInline className="w-full h-full object-cover aspect-video">
+                <source src={item.url} type="video/mp4" />
+              </video>
+            ) : (
+              <img src={item.url} alt={`Gallery ${i}`} className="w-full h-full object-cover aspect-video hover:scale-105 transition-transform duration-1000" />
+            )}
+          </div>
+        )) : (
+          <div className="text-center py-20 opacity-20 italic">No additional assets available for this showcase.</div>
+        )}
+      </div>
+
+      {/* Full Case Study CTA */}
+      <div className="py-20 flex flex-col items-center gap-12">
+        <div className="h-px w-24 bg-primary/30"></div>
+        <button className="group relative h-20 px-16 rounded-full bg-white text-black font-black text-xs tracking-[0.5em] uppercase hover:bg-primary transition-all overflow-hidden border border-white/10">
+          <span className="relative z-10">Initiate Full Case Study</span>
+          <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+        </button>
+      </div>
+    </section>
+
+    {/* Branding Header */}
+    <div className="fixed top-12 left-24 hidden lg:block pointer-events-none mix-blend-difference z-[110]">
+      <span className="text-white text-[10px] font-black tracking-widest uppercase block">FAIZAN ELLAHI</span>
+      <span className="text-white/40 text-[8px] font-bold tracking-widest uppercase">DISCOVERIVE VIEW</span>
+    </div>
+  </motion.div>
+);
+
+const MetaItem: React.FC<{ label: string, value: string }> = ({ label, value }) => (
+  <div>
+    <span className="text-[10px] font-bold text-white/20 tracking-[0.3em] uppercase block mb-3 font-mono">[{label}]</span>
+    <p className="text-white text-base font-bold tracking-tight uppercase leading-tight">{value}</p>
+  </div>
+);
 
 export default Projects;
