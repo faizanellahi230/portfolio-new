@@ -10,7 +10,7 @@ const Contact: React.FC = () => {
         <div className="space-y-10">
           <div className="space-y-4">
             <span className="text-primary font-mono text-[10px] tracking-[0.5em] uppercase italic px-2 border-l border-primary">Availability</span>
-            <p className="text-white/60 text-sm font-medium">Currently accepting high-end 3D & Motion commissions.</p>
+            <p className="text-white/60 text-sm font-medium tracking-wide">Currently accepting high-end 3D & Motion commissions.</p>
           </div>
 
           <h1 className="text-6xl lg:text-8xl font-black text-white leading-[0.85] tracking-tighter uppercase">
@@ -18,7 +18,7 @@ const Contact: React.FC = () => {
             <span className="text-white/20">Project</span>
           </h1>
 
-          <p className="text-white/40 text-lg leading-relaxed max-w-sm">
+          <p className="text-white/40 text-lg leading-relaxed max-w-sm tracking-wide">
             Ready to bring your vision to life? Let's discuss your next digital masterpiece.
           </p>
         </div>

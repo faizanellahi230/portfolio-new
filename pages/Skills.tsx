@@ -5,56 +5,63 @@ const Skills: React.FC = () => {
   const tools = [
     {
       name: "Blender",
-      desc: "Modeling, animation, and node-based compositing.",
+      desc: "Comprehensive 3D workflow including modeling, animation, shading, lighting, rendering, and node-based compositing for professional results.",
       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Blender_logo_no_text.svg/2560px-Blender_logo_no_text.svg.png",
       tags: ['Geometry Nodes', 'Cycles X', 'Hard Surface'],
       progress: '95%'
     },
     {
       name: "Unreal Engine 5",
-      desc: "Real-time rendering, blueprints, and virtual production.",
+      desc: "Real-time environment setup, lighting, materials, cinematic rendering, and asset integration for interactive and high-quality visual outputs.",
       img: "/Unreal Engine.png",
-      tags: ['Blueprints', 'Lumen', 'Niagara'],
+      tags: ['Lumen', 'Niagara', 'Blueprints'],
       progress: '90%'
     },
     {
       name: "ZBrush",
-      desc: "Digital sculpting and high-poly character creation.",
+      desc: "High-resolution sculpting, detailing, and character/asset development with strong focus on anatomy, form, and surface refinement.",
       img: "/ZBrush_icon.svg",
       tags: ['Sculpting', 'Dynamesh', 'Polypaint'],
       progress: '85%'
     },
     {
       name: "Substance Painter",
-      desc: "Advanced texturing and material creation.",
+      desc: "Physically based texturing (PBR), smart materials, texture baking, and detailed surface wear for production-ready assets.",
       img: "/substance-3d-painter-64.svg",
-      tags: ['PBR', 'Smart Materials', 'Baking'],
+      tags: ['PBR', 'Baking', 'Smart Materials'],
       progress: '90%'
     },
     {
       name: "3Ds Max",
-      desc: "Professional 3D modeling and rendering.",
+      desc: "Hard-surface and architectural modeling, scene setup, and rendering with clean topology and efficient workflows.",
       img: "/3ds-max.svg",
       tags: ['Modeling', 'UV Mapping', 'Arnold'],
       progress: '80%'
     },
     {
       name: "Marmoset Toolbag",
-      desc: "Real-time lookdev, baking, and rendering.",
+      desc: "Real-time rendering, lighting, texture previewing, and high-quality asset presentation for portfolios and client reviews.",
       img: "/Marmoset.png",
       tags: ['Baking', 'RTX Rendering', 'Lookdev'],
       progress: '85%'
     },
     {
       name: "Rizom UV",
-      desc: "Industrial strength UV mapping and unfolding.",
+      desc: "Advanced UV unwrapping, packing, and optimization for clean, distortion-free UV layouts suitable for game and production pipelines.",
       img: "/Rizom UV.svg",
       tags: ['Unwrap', 'Packing', 'Optimization'],
       progress: '90%'
     },
     {
+      name: "Twinmotion",
+      desc: "Real-time architectural visualization, scene composition, lighting, and fast client-ready presentations.",
+      img: "https://logo.svgcdn.com/simple-icons/twinmotion-dark.svg",
+      tags: ['ArchViz', 'Lumen', 'Fast Rendering'],
+      progress: '85%'
+    },
+    {
       name: "Photoshop",
-      desc: "Post-processing, texturing, and matte painting.",
+      desc: "Texture editing, matte painting, post-processing, and visual enhancements for renders and digital assets.",
       img: "/Adobe-Photoshop-Logo.png",
       tags: ['Compositing', 'Textures', 'Post'],
       progress: '95%'
@@ -72,11 +79,11 @@ const Skills: React.FC = () => {
               <span className="h-px w-12 bg-primary transition-all group-hover:w-20"></span>
               <span className="text-[10px] font-bold tracking-[0.4em] uppercase italic">The Arsenal</span>
             </div>
-            <h1 className="text-6xl md:text-9xl font-black tracking-tighter text-white leading-[0.8] uppercase">
+            <h1 className="text-6xl md:text-9xl font-black tracking-tighter text-white leading-[0.8] uppercase tracking-wide">
               DIGITAL <br />
               <span className="text-white/20 font-black">WEAPONRY</span>
             </h1>
-            <p className="text-white/40 text-sm md:text-lg max-w-xl font-medium leading-relaxed">
+            <p className="text-white/40 text-sm md:text-lg max-w-xl font-medium leading-relaxed tracking-wide">
               A specialized collection of industry-leading software utilized to define the next generation of 3D artistry and metaverse experiences.
             </p>
           </div>
@@ -86,7 +93,7 @@ const Skills: React.FC = () => {
       {/* Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1920px] mx-auto">
         {tools.map((tool, i) => (
-          <div key={tool.name} className="group relative h-[24rem] bg-white/[0.03] backdrop-blur-md rounded-[2.5rem] border border-white/10 p-8 flex flex-col justify-between overflow-hidden hover:border-primary/40 hover:shadow-[0_0_40px_rgba(6,249,241,0.05)] transition-all duration-700">
+          <div key={tool.name} className="group relative min-h-[20rem] bg-white/[0.03] backdrop-blur-md rounded-[2.5rem] border border-white/10 p-8 flex flex-col justify-between overflow-hidden hover:border-primary/40 hover:shadow-[0_0_40px_rgba(6,249,241,0.05)] transition-all duration-700">
 
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
@@ -98,23 +105,9 @@ const Skills: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <h3 className="text-2xl font-black text-white tracking-tight group-hover:text-primary transition-colors">{tool.name}</h3>
-                <p className="text-white/40 text-xs leading-relaxed line-clamp-2 font-medium">{tool.desc}</p>
-              </div>
-
-              {/* Software Progress Bar */}
-              <div className="space-y-2 pt-2">
-                <div className="flex justify-between text-[9px] font-black uppercase tracking-[0.2em] text-white/20">
-                  <span>Mastery Level</span>
-                  <span className="text-primary italic">{tool.progress}</span>
-                </div>
-                <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
-                    style={{ width: tool.progress }}
-                  ></div>
-                </div>
+                <p className="text-white/40 text-xs leading-relaxed font-medium tracking-wide">{tool.desc}</p>
               </div>
             </div>
 

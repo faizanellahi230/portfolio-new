@@ -14,12 +14,12 @@ const About: React.FC = () => {
               <span className="text-[10px] font-bold tracking-[0.4em] uppercase italic">The Artist</span>
             </div>
 
-            <h1 className="text-7xl md:text-9xl font-black text-white leading-[0.9] tracking-tighter uppercase">
+            <h1 className="text-7xl md:text-9xl font-black text-white leading-[0.9] tracking-tighter uppercase tracking-wide">
               FAIZAN <br />
               <span className="text-white/10">ELLAHI</span>
             </h1>
 
-            <p className="text-xl text-white/60 leading-relaxed max-w-xl font-medium">
+            <p className="text-xl text-white/60 leading-relaxed max-w-xl font-medium tracking-wide">
               A digital architect specializing in <span className="text-white">high-fidelity 3D modeling</span>, immersive meta-environments, and cinematic motion design.
               I bridge the gap between technical precision and artistic imagination.
             </p>
@@ -27,7 +27,7 @@ const About: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-8 lg:gap-16 pt-12 border-t border-white/5">
             <div>
-              <span className="text-5xl md:text-7xl font-black text-white leading-none block mb-2">03<span className="text-primary text-xl">+</span></span>
+              <span className="text-5xl md:text-7xl font-black text-white leading-none block mb-2">04<span className="text-primary text-xl">+</span></span>
               <span className="text-[10px] font-bold text-white/30 tracking-[0.3em] uppercase">Years Exp.</span>
             </div>
             <div>
@@ -44,7 +44,7 @@ const About: React.FC = () => {
 
             <div className="absolute bottom-12 left-12 z-20 space-y-2">
               <span className="text-[10px] font-bold text-primary tracking-[0.3em] uppercase">Current Location</span>
-              <p className="text-3xl font-black text-white tracking-tighter">PAKISTAN, PK</p>
+              <p className="text-3xl font-black text-white tracking-tighter">LAHORE, PK</p>
             </div>
           </div>
         </div>
@@ -53,7 +53,7 @@ const About: React.FC = () => {
       {/* Services Section - Minimalist Cards */}
       <section className="mb-48">
         <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-10">
-          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter">DIGITAL <br /><span className="text-white/20">CAPABILITIES</span></h2>
+          <h2 className="tracking-wide text-5xl md:text-7xl font-black text-white tracking-tighter">DIGITAL <br /><span className="text-white/20">CAPABILITIES</span></h2>
           <p className="text-white/40 max-w-sm text-[11px] leading-loose tracking-[0.1em] uppercase font-bold text-right italic">
             From conceptual digital sculpting to real-time rendering in high-fidelity engines.
           </p>
@@ -128,9 +128,8 @@ const About: React.FC = () => {
 
 const CapabilityCard: React.FC<{ num: string, title: string, desc: string, tools: string[] }> = ({ num, title, desc, tools }) => (
   <div className="bg-white/[0.03] backdrop-blur-md p-12 transition-all hover:bg-white/5 group">
-    <span className="text-primary font-mono text-xs font-bold block mb-8 opacity-40 group-hover:opacity-100 transition-opacity">[{num}]</span>
     <h3 className="text-3xl font-black text-white mb-6 tracking-tighter">{title}</h3>
-    <p className="text-white/40 text-sm leading-relaxed mb-10 group-hover:text-white/60 transition-colors">{desc}</p>
+    <p className="text-white/40 text-sm leading-relaxed mb-10 group-hover:text-white/60 transition-colors tracking-wide">{desc}</p>
     <div className="flex flex-wrap gap-2">
       {tools.map(tool => (
         <span key={tool} className="text-[9px] font-bold text-white/30 tracking-widest uppercase border border-white/10 px-2 py-1 rounded group-hover:border-primary/30 group-hover:text-primary transition-all">
@@ -148,7 +147,7 @@ const ExperienceItem: React.FC<{ year: string, company: string, role: string, de
       <span className="text-[10px] font-bold text-white/20 tracking-[0.2em] uppercase font-mono">{year}</span>
     </div>
     <p className="text-primary text-xs font-bold tracking-widest uppercase">{role}</p>
-    <p className="text-white/50 text-sm leading-relaxed max-w-2xl">{desc}</p>
+    <p className="text-white/50 text-sm leading-relaxed max-w-2xl tracking-wide">{desc}</p>
     <div className="h-px w-full bg-white/5 group-hover:bg-primary/20 transition-colors"></div>
   </div>
 );

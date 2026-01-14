@@ -174,21 +174,21 @@ const ProjectOverlay: React.FC<{ project: any, onClose: () => void }> = ({ proje
     <section className="relative w-full h-screen flex items-center overflow-hidden">
       {/* Background Media - Anchored Left with Smooth Edge Blending */}
       <div
-        className="absolute inset-y-0 left-0 w-full lg:w-[70%] z-0"
+        className="absolute inset-y-0 left-0 w-full lg:w-[75%] z-0"
         style={{
-          maskImage: 'linear-gradient(to right, black 40%, transparent 90%), linear-gradient(to top, transparent 0%, black 15%)',
-          WebkitMaskImage: 'linear-gradient(to right, black 40%, transparent 90%), linear-gradient(to top, transparent 0%, black 15%)',
+          maskImage: 'linear-gradient(to right, black 25%, transparent 95%), linear-gradient(to top, transparent 0%, black 10%)',
+          WebkitMaskImage: 'linear-gradient(to right, black 25%, transparent 95%), linear-gradient(to top, transparent 0%, black 10%)',
           maskComposite: 'intersect',
           WebkitMaskComposite: 'source-in'
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
         {project.video ? (
-          <video autoPlay loop muted playsInline className="w-full h-full object-cover brightness-90">
+          <video autoPlay loop muted playsInline className="w-full h-full object-cover">
             <source src={project.video} type="video/mp4" />
           </video>
         ) : (
-          <div className="w-full h-full bg-cover bg-center brightness-90" style={{ backgroundImage: `url('${project.img}')` }}></div>
+          <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url('${project.img}')` }}></div>
         )}
       </div>
 
@@ -215,7 +215,7 @@ const ProjectOverlay: React.FC<{ project: any, onClose: () => void }> = ({ proje
               {project.title}
             </h2>
 
-            <p className="text-white/40 text-lg lg:text-xl leading-relaxed max-w-xl lg:ml-auto font-medium">
+            <p className="text-white/40 text-lg lg:text-xl leading-relaxed max-w-xl lg:ml-auto font-medium tracking-wide">
               {project.longDesc || project.desc}
             </p>
           </div>

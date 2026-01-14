@@ -43,7 +43,7 @@ const Home: React.FC = () => {
 
           {/* Bottom Right: Description & Actions */}
           <div className="flex flex-col gap-8 max-w-md w-full">
-            <p className="text-slate-300 text-lg leading-relaxed border-l-2 border-primary/50 pl-6">
+            <p className="text-slate-300 text-lg leading-relaxed border-l-2 border-primary/50 pl-6 tracking-wide">
               Building digital experiences that matter. Focusing on motion, interaction, and visual storytelling.
             </p>
 
