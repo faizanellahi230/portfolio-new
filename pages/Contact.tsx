@@ -48,51 +48,121 @@ const Contact: React.FC = () => {
 
       {/* Cinematic Form Container */}
       <div className="w-full lg:w-7/12 bg-white/[0.02] border-l border-white/5 p-10 lg:p-24 flex items-center">
-        <form className="w-full max-w-2xl space-y-12" onSubmit={e => e.preventDefault()}>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <LuxuryInput label="YOUR IDENTITY" placeholder="Enter your name" type="text" />
-            <LuxuryInput label="DIGITAL ADDRESS" placeholder="Enter your email" type="email" />
-          </div>
-
-          <div className="space-y-6">
-            <label className="text-[10px] font-black text-white/30 tracking-[0.3em] uppercase ml-2">SPECIFIC EXPERTISE</label>
-            <div className="flex flex-wrap gap-3">
-              {["3D Character", "Environment", "Motion Design", "Metaverse", "Product Render"].map(s => (
-                <label key={s} className="cursor-pointer group">
-                  <input className="peer sr-only" name="service" type="checkbox" />
-                  <div className="px-8 py-3 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-md text-[10px] font-bold tracking-widest text-white/40 hover:border-primary/50 peer-checked:bg-white peer-checked:text-black peer-checked:border-white transition-all uppercase">
-                    {s}
-                  </div>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <label className="text-[10px] font-black text-white/30 tracking-[0.3em] uppercase ml-2">PROJECT BRIEF</label>
-            <textarea className="w-full h-48 p-8 rounded-[2rem] bg-white/[0.03] backdrop-blur-md border border-white/10 focus:border-primary focus:ring-0 transition-all outline-none resize-none placeholder:text-white/10 text-white font-medium" placeholder="Describe the masterpiece you have in mind..."></textarea>
-          </div>
-
-          <div className="flex items-center justify-between gap-8 pt-8">
-            <button className="flex-1 md:flex-none group flex items-center justify-center gap-6 bg-white text-black px-12 py-6 rounded-full font-black text-[10px] tracking-[0.4em] uppercase hover:bg-primary transition-all">
-              Initiate Inquiry
-              <span className="material-symbols-outlined text-sm group-hover:translate-x-2 transition-transform">arrow_forward</span>
-            </button>
-            <div className="hidden md:block">
-              <p className="text-[10px] font-bold text-white/20 tracking-widest italic flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-primary animate-pulse"></span>
-                ACTIVE RESPONSE WITHIN 24H
-              </p>
-            </div>
-          </div>
-
-        </form>
+        <ContactForm />
       </div>
-
     </div>
   );
 };
+
+const ContactForm: React.FC = () => {
+  const [formData, setFormData] = React.useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = React.useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const importSupabase = async () => {
+    const { supabase } = await import('../lib/supabase');
+    return supabase;
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+
+    try {
+      const supabase = await importSupabase();
+      const { error } = await supabase.from('messages').insert([formData]);
+
+      if (error) throw error;
+      setStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+    }
+  };
+
+  return (
+    <form className="w-full max-w-2xl space-y-12" onSubmit={handleSubmit}>
+      {status === 'success' && (
+        <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-500 rounded-xl mb-6">
+          Message sent successfully!
+        </div>
+      )}
+      {status === 'error' && (
+        <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 rounded-xl mb-6">
+          Failed to send message. Please try again.
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="space-y-3 group">
+          <label className="text-[10px] font-black text-white/30 tracking-[0.3em] uppercase ml-2 group-focus-within:text-primary transition-colors">YOUR IDENTITY</label>
+          <input
+            className="w-full h-16 px-8 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/10 focus:border-primary focus:ring-0 transition-all outline-none placeholder:text-white/10 text-white font-medium italic"
+            placeholder="Enter your name"
+            type="text"
+            required
+            value={formData.name}
+            onChange={e => setFormData({ ...formData, name: e.target.value })}
+          />
+        </div>
+        <div className="space-y-3 group">
+          <label className="text-[10px] font-black text-white/30 tracking-[0.3em] uppercase ml-2 group-focus-within:text-primary transition-colors">DIGITAL ADDRESS</label>
+          <input
+            className="w-full h-16 px-8 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/10 focus:border-primary focus:ring-0 transition-all outline-none placeholder:text-white/10 text-white font-medium italic"
+            placeholder="Enter your email"
+            type="email"
+            required
+            value={formData.email}
+            onChange={e => setFormData({ ...formData, email: e.target.value })}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-6">
+        <label className="text-[10px] font-black text-white/30 tracking-[0.3em] uppercase ml-2">SPECIFIC EXPERTISE</label>
+        <div className="flex flex-wrap gap-3">
+          {["3D Character", "Environment", "Motion Design", "Metaverse", "Product Render"].map(s => (
+            <label key={s} className="cursor-pointer group">
+              <input className="peer sr-only" name="service" type="checkbox" />
+              <div className="px-8 py-3 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-md text-[10px] font-bold tracking-widest text-white/40 hover:border-primary/50 peer-checked:bg-white peer-checked:text-black peer-checked:border-white transition-all uppercase">
+                {s}
+              </div>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <label className="text-[10px] font-black text-white/30 tracking-[0.3em] uppercase ml-2">PROJECT BRIEF</label>
+        <textarea
+          className="w-full h-48 p-8 rounded-[2rem] bg-white/[0.03] backdrop-blur-md border border-white/10 focus:border-primary focus:ring-0 transition-all outline-none resize-none placeholder:text-white/10 text-white font-medium"
+          placeholder="Describe the masterpiece you have in mind..."
+          required
+          value={formData.message}
+          onChange={e => setFormData({ ...formData, message: e.target.value })}
+        ></textarea>
+      </div>
+
+      <div className="flex items-center justify-between gap-8 pt-8">
+        <button
+          type="submit"
+          disabled={status === 'submitting'}
+          className="flex-1 md:flex-none group flex items-center justify-center gap-6 bg-white text-black px-12 py-6 rounded-full font-black text-[10px] tracking-[0.4em] uppercase hover:bg-primary transition-all disabled:opacity-50"
+        >
+          {status === 'submitting' ? 'Sending...' : 'Initiate Inquiry'}
+          <span className="material-symbols-outlined text-sm group-hover:translate-x-2 transition-transform">arrow_forward</span>
+        </button>
+        <div className="hidden md:block">
+          <p className="text-[10px] font-bold text-white/20 tracking-widest italic flex items-center gap-2">
+            <span className="h-1 w-1 rounded-full bg-primary animate-pulse"></span>
+            ACTIVE RESPONSE WITHIN 24H
+          </p>
+        </div>
+      </div>
+    </form>
+  );
+};
+
+
 
 const LuxuryInput: React.FC<{ label: string, placeholder: string, type: string }> = ({ label, placeholder, type }) => (
   <div className="space-y-3 group">

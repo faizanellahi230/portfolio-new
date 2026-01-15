@@ -3,6 +3,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
+  /* Supabase Integration */
+  const [content, setContent] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const fetchContent = async () => {
+      const { supabase } = await import('../lib/supabase');
+      const { data } = await supabase.from('site_content').select('*').single();
+      if (data && data.content) {
+        setContent(data.content);
+      }
+    };
+    fetchContent();
+  }, []);
+  /* End Integration */
+
   return (
     <div className="relative h-full w-full overflow-hidden">
       {/* Background Video */}
@@ -35,10 +50,9 @@ const Home: React.FC = () => {
             </div>
 
             <h1 className="text-white text-4xl md:text-7xl font-black leading-[0.9] tracking-tighter mix-blend-overlay opacity-90">
-              3D ARTIST<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-white">MOTION DESIGNER</span>
+              {content?.home_heading || <>3D ARTIST<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-white">MOTION DESIGNER</span></>}
             </h1>
-            <p className="text-slate-300 text-sm font-bold tracking-[0.2em] uppercase pl-2">Pakistan</p>
+            <p className="text-slate-300 text-sm font-bold tracking-[0.2em] uppercase pl-2">{content?.home_subheading || 'Pakistan'}</p>
           </div>
 
           {/* Bottom Right: Description & Actions */}

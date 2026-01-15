@@ -7,79 +7,36 @@ const Projects: React.FC = () => {
 
   const categories = ['All', '3D Scene', 'Character', 'Motion', 'Environment', 'Product'];
 
-  const projects = [
-    {
-      title: "Cloud City Metaverse",
-      category: "Environment",
-      year: "2024",
-      client: "Narsun Studios",
-      role: "Lead 3D Artist",
-      desc: "A decentralized gaming platform allowing players to create, own, and build their presence in a borderless community.",
-      longDesc: "Cinema4D creation for DJ Snake and Bipolar Sunshine's live performance at the NRJ MUSIC AWARDS 2025. An immersive artistic direction aligned with the universe of the track 'Paradise', broadcast on set during the event.",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBkBB358_6ao6UU36nYLRmBXUTSCfvIw4teLZIx7By73vNbWBa-lYGHJ3zRS5UvX68faCbodZ56-9nK6dCvsaVOAA5wPBlcVwJfs0uEkeUk1j1rasxqeiXSs3hmhSue3Hr38o2Wrolf2LHa24YX3S9eJPogNY4lfnzyOL57AQVXkb673Djgo15Itm8caaeHyVSF_q_eIFYhr84Ujusy1yiluJxh_fcTEwgZZLdOVBp3DSm2YTWawzCP3wGXK5mc-f3vvVxKSz6YrSAh",
-      video: "/video.mp4",
-      gallery: [
-        { type: 'image', url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDTNUk03sIWWXQnO45HGUFLZXgY5VN9WPEPM0T3PIZDy1zZV5Cyh0NnprSIs2RL4O37aytFDVmP0NvSUU1_sdaOm0K4HHBHvSBoOo5Igwro4KX4SMYxJibsSGcqv6o-HfhmJGWNLqZ55ygVbJkzntwx1w0ET3_NXZhr-oTijkn9kXpkqxd0Q5UWa-t9se1EZHzfd5HCATHRnOBDY-J-4NWXECZDWayR82YXGk15BkvaHy72AIQltR1cv09c3qlk-OHA975BSM6lNH_7' },
-        { type: 'video', url: '/video.mp4' },
-        { type: 'image', url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA-F57Pw9iB-sHrgBgzXDqWyMdcAFtjZpIDT5ATpUh3bX_JJRmQF_mNVyr1SRCGfuFbhqO5J3K1wLzJdx-AbBC61wn3NbhvnySMF4cHZ-DnIEbHmY5UcNgv2K4I5zBaBdBuR6jSO6X2z5QgrcJInJG0djTqA8T4aCDWDPaxAd3bdeqYbhQrHmFXmY6sWLOqXIX-aMeiKuwWy-9SEy8KKaYIDjbaSedq9o4TwVXeqgJYiKVdUonVjyKZl1Aj5xA9wX3zTCE3-xzFLnYX' }
-      ]
-    },
-    {
-      title: "DJ Snake Live Visuals",
-      category: "Motion",
-      year: "2025",
-      client: "NRJ Music",
-      role: "3D Creation",
-      desc: "Immersive 3D stage visuals for DJ Snake & Bipolar Sunshine at NRJ Music Awards.",
-      longDesc: "The project involved creating a high-fidelity emotional journey through 3D environments that react to the music's frequency and mood. Every step of the staircase represents a beat, leading to a celestial climax.",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDTNUk03sIWWXQnO45HGUFLZXgY5VN9WPEPM0T3PIZDy1zZV5Cyh0NnprSIs2RL4O37aytFDVmP0NvSUU1_sdaOm0K4HHBHvSBoOo5Igwro4KX4SMYxJibsSGcqv6o-HfhmJGWNLqZ55ygVbJkzntwx1w0ET3_NXZhr-oTijkn9kXpkqxd0Q5UWa-t9se1EZHzfd5HCATHRnOBDY-J-4NWXECZDWayR82YXGk15BkvaHy72AIQltR1cv09c3qlk-OHA975BSM6lNH_7",
-      video: "/video.mp4",
-      gallery: [
-        { type: 'image', url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBkBB358_6ao6UU36nYLRmBXUTSCfvIw4teLZIx7By73vNbWBa-lYGHJ3zRS5UvX68faCbodZ56-9nK6dCvsaVOAA5wPBlcVwJfs0uEkeUk1j1rasxqeiXSs3hmhSue3Hr38o2Wrolf2LHa24YX3S9eJPogNY4lfnzyOL57AQVXkb673Djgo15Itm8caaeHyVSF_q_eIFYhr84Ujusy1yiluJxh_fcTEwgZZLdOVBp3DSm2YTWawzCP3wGXK5mc-f3vvVxKSz6YrSAh' },
-        { type: 'image', url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA-F57Pw9iB-sHrgBgzXDqWyMdcAFtjZpIDT5ATpUh3bX_JJRmQF_mNVyr1SRCGfuFbhqO5J3K1wLzJdx-AbBC61wn3NbhvnySMF4cHZ-DnIEbHmY5UcNgv2K4I5zBaBdBuR6jSO6X2z5QgrcJInJG0djTqA8T4aCDWDPaxAd3bdeqYbhQrHmFXmY6sWLOqXIX-aMeiKuwWy-9SEy8KKaYIDjbaSedq9o4TwVXeqgJYiKVdUonVjyKZl1Aj5xA9wX3zTCE3-xzFLnYX' }
-      ]
-    },
-    {
-      title: "Neon Identity",
-      category: "Branding",
-      year: "2024",
-      client: "Neon Tech",
-      role: "Art Director",
-      desc: "Comprehensive visual identity system for a next-gen lighting technology startup.",
-      longDesc: "Crafting a visual language that pulses with the energy of futuristic urban landscapes. The identity uses high-contrast glow effects and minimalist typography to establish a premium tech presence.",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuA-F57Pw9iB-sHrgBgzXDqWyMdcAFtjZpIDT5ATpUh3bX_JJRmQF_mNVyr1SRCGfuFbhqO5J3K1wLzJdx-AbBC61wn3NbhvnySMF4cHZ-DnIEbHmY5UcNgv2K4I5zBaBdBuR6jSO6X2z5QgrcJInJG0djTqA8T4aCDWDPaxAd3bdeqYbhQrHmFXmY6sWLOqXIX-aMeiKuwWy-9SEy8KKaYIDjbaSedq9o4TwVXeqgJYiKVdUonVjyKZl1Aj5xA9wX3zTCE3-xzFLnYX"
-    },
-    {
-      title: "Cyberpunk Avatar",
-      category: "Character",
-      year: "2023",
-      client: "Meta-X",
-      role: "Character Artist",
-      desc: "High-fidelity digital human for next-gen metaverse interaction.",
-      longDesc: "Using ZBrush and Substance Painter, I developed this character with micro-detail skin textures and functional cyberpunk augmentations, optimized for real-time engine performance.",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAXgLI6pTaMxErxRVD_wtK9j909zJN9h3jPGDzbEK1s0hvfv3HRBDEL13B449sg7oWY8WZYxe_0EFyEURQSJv7BAsyiHKjLnI0ITIIP0i24YtkT6F39tC-1YaeWpug2VhgSTs7llLIRVFFhQ9_aFck6Gs91NWGWLjObrEf5Cx0blPo-1gYzUm8dlGr-aVsvoqEi6nvkMz8TjL20qH96-xGFajhXLwnJRVx04xKMe1c-LWFxE9f7p9DA4wxES0oNXdplhZJXJ08kpJR"
-    },
-    {
-      title: "Luxury Watch Render",
-      category: "Product",
-      year: "2024",
-      client: "Zenith",
-      role: "3D Generalist",
-      desc: "Photorealistic product visualization for a limited edition luxury timepiece.",
-      longDesc: "Focusing on macro-photography aesthetics, this render highlights the intricate mechanical movements and material finishes, utilizing Redshift's high-end lighting capabilities.",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBCDat6zu7Cwbz2CDB6CHDLSzjyaIJMdKGhPsZ0zgFmPfSR9UNugxzVdpF-gJSFkuHIxtXazr-h3P6eaBTLLH6jLjAdoGiEzpEx1s1qWH7ZFw8hMWHoT85D9Tz0RQ0hLnM7Th_dTpuH7izwVde7iAG4WkMRDqtxg7M81Pn-uvv486ZPvZaGnoPSB0Dj4uGnAYYp2ZW9fT-to_sFon75UMdCm61iTmrKTNmZuzipZQbHOXFBlcHWo2_aY9pKBqjMEC5I_aIlJqJUfpyO"
-    },
-    {
-      title: "Future Metropolis",
-      category: "Environment",
-      year: "2024",
-      client: "Studio 23",
-      role: "Env. Designer",
-      desc: "Large-scale world building for metaverses and real-time interactive experiences.",
-      longDesc: "A modular city-building kit designed for UE5, featuring dynamic lighting setups and procedural distribution of high-fidelity architectural assets.",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDv0LftO-cDkVzt0nbCGbYNg58Zu70T7TurogdK1o8Wv0mYdlbs-wp2_oflZL8ke5N4ADwOfccsxYB-m4zYxoH8xIN9DZj3qi8tTu2nrZzQphnPmneDlFbwg2jTbT76OoJLsgmkaV2CSECpYD_AGfv1LMrOdGZnqRlf1tiSl9FprAxcIPYyf2n6gXavqSp08LeEICv-7Uk91kPXzPHD7FVcxCYLVgwodpHYv5pJD765ZKoNK0VRdp0wXlRkfbYKHoK8nHes1lkGa7X7"
-    }
-  ];
+  /* Supabase Integration */
+  const [projects, setProjects] = useState<any[]>([]);
+  const [dbLoading, setDbLoading] = useState(true);
+
+  React.useEffect(() => {
+    const fetchProjects = async () => {
+      const { supabase } = await import('../lib/supabase');
+      let { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (data) {
+        // Transform simple array if needed, assuming DB matches structure mostly
+        // If DB stores 'tools' as string array, and we need categories..
+        // Assuming DB fields: id, title, category, description_short (mapped to desc), description_long (mapped to longDesc), thumbnail_url (img), images (gallery), external_link
+        const transformed = data.map(p => ({
+          ...p,
+          desc: p.description_short,
+          longDesc: p.description_long,
+          img: p.thumbnail_url,
+          gallery: p.images ? p.images.map((url: string) => ({ type: 'image', url })) : []
+        }));
+        setProjects(transformed);
+      }
+      setDbLoading(false);
+    };
+    fetchProjects();
+  }, []);
+  /* End Supabase Integration */
 
   const filteredProjects = filter === 'All' ? projects : projects.filter(p => p.category === filter);
 

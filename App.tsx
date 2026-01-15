@@ -10,14 +10,24 @@ import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import GravityParticles from './components/GravityParticles';
+import { Navigate } from 'react-router-dom';
+
+// Admin Imports
+import Login from './pages/admin/Login';
+import Dashboard from './pages/admin/Dashboard';
+import ProjectsManager from './pages/admin/ProjectsManager';
+import SkillsManager from './pages/admin/SkillsManager';
+import ContentManager from './pages/admin/ContentManager';
+import Messages from './pages/admin/Messages';
+import AdminLayout from './layouts/AdminLayout';
 
 const App: React.FC = () => {
   const location = useLocation();
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden">
-      <GravityParticles />
-      <Navbar />
+      {!location.pathname.startsWith('/admin') && <GravityParticles />}
+      {!location.pathname.startsWith('/admin') && <Navbar />}
       <main className="flex-1 overflow-hidden relative">
         <AnimatePresence mode="wait">
           <div key={location.pathname} className="h-full w-full">
@@ -27,6 +37,17 @@ const App: React.FC = () => {
               <Route path="/skills" element={<PageTransition><Skills /></PageTransition>} />
               <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
               <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<Login />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="projects" element={<ProjectsManager />} />
+                <Route path="skills" element={<SkillsManager />} />
+                <Route path="content" element={<ContentManager />} />
+                <Route path="messages" element={<Messages />} />
+              </Route>
             </Routes>
           </div>
         </AnimatePresence>

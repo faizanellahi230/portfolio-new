@@ -1,72 +1,47 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 
 const Skills: React.FC = () => {
-  const tools = [
-    {
-      name: "Blender",
-      desc: "Comprehensive 3D workflow including modeling, animation, shading, lighting, rendering, and node-based compositing for professional results.",
-      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Blender_logo_no_text.svg/2560px-Blender_logo_no_text.svg.png",
-      tags: ['Geometry Nodes', 'Cycles X', 'Hard Surface'],
-      progress: '95%'
-    },
-    {
-      name: "Unreal Engine 5",
-      desc: "Real-time environment setup, lighting, materials, cinematic rendering, and asset integration for interactive and high-quality visual outputs.",
-      img: "/Unreal Engine.png",
-      tags: ['Lumen', 'Niagara', 'Blueprints'],
-      progress: '90%'
-    },
-    {
-      name: "ZBrush",
-      desc: "High-resolution sculpting, detailing, and character/asset development with strong focus on anatomy, form, and surface refinement.",
-      img: "/ZBrush_icon.svg",
-      tags: ['Sculpting', 'Dynamesh', 'Polypaint'],
-      progress: '85%'
-    },
-    {
-      name: "Substance Painter",
-      desc: "Physically based texturing (PBR), smart materials, texture baking, and detailed surface wear for production-ready assets.",
-      img: "/substance-3d-painter-64.svg",
-      tags: ['PBR', 'Baking', 'Smart Materials'],
-      progress: '90%'
-    },
-    {
-      name: "3Ds Max",
-      desc: "Hard-surface and architectural modeling, scene setup, and rendering with clean topology and efficient workflows.",
-      img: "/3ds-max.svg",
-      tags: ['Modeling', 'UV Mapping', 'Arnold'],
-      progress: '80%'
-    },
-    {
-      name: "Marmoset Toolbag",
-      desc: "Real-time rendering, lighting, texture previewing, and high-quality asset presentation for portfolios and client reviews.",
-      img: "/Marmoset.png",
-      tags: ['Baking', 'RTX Rendering', 'Lookdev'],
-      progress: '85%'
-    },
-    {
-      name: "Rizom UV",
-      desc: "Advanced UV unwrapping, packing, and optimization for clean, distortion-free UV layouts suitable for game and production pipelines.",
-      img: "/Rizom UV.svg",
-      tags: ['Unwrap', 'Packing', 'Optimization'],
-      progress: '90%'
-    },
-    {
-      name: "Twinmotion",
-      desc: "Real-time architectural visualization, scene composition, lighting, and fast client-ready presentations.",
-      img: "https://logo.svgcdn.com/simple-icons/twinmotion-dark.svg",
-      tags: ['ArchViz', 'Lumen', 'Fast Rendering'],
-      progress: '85%'
-    },
-    {
-      name: "Photoshop",
-      desc: "Texture editing, matte painting, post-processing, and visual enhancements for renders and digital assets.",
-      img: "/Adobe-Photoshop-Logo.png",
-      tags: ['Compositing', 'Textures', 'Post'],
-      progress: '95%'
-    },
-  ];
+  /* Supabase Integration */
+  const [tools, setTools] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    const fetchSkills = async () => {
+      const { supabase } = await import('../lib/supabase');
+      let { data } = await supabase
+        .from('skills')
+        .select('*')
+        .order('level', { ascending: false });
+
+      if (data && data.length > 0) {
+        // Transform if needed. Assuming DB has: name, level, category. 
+        // DB might not have 'desc', 'img', 'tags' yet in schema plan? 
+        // Plan said: id, name, level, category.
+        // We need to map this to UI.
+        // For now, we might need to Mock the missing fields or rely on defaults if DB is simple.
+        // OR we update schema plan to include these?
+        // User wanted "Projects title, desc, img, gallery, tools, category, link".
+        // Skills: "Skill name, proficiency, category".
+        // UI shows: Name, Desc, Img, Tags, Progress.
+        // Data in DB is minimal. I will map what I can and use placeholders or hide others.
+
+        const transformed = data.map(s => ({
+          name: s.name,
+          desc: s.description || s.category + " tool",
+          img: s.image_url || "/placeholder_icon.png",
+          tags: s.tags || [s.category],
+          progress: (s.level || 0) + "%"
+        }));
+        setTools(transformed);
+      } else {
+        setTools([]);
+      }
+      setLoading(false);
+    };
+    fetchSkills();
+  }, []);
+  /* End Integration */
 
   return (
     <div className="min-h-screen w-full pt-32 px-6 md:px-20 pb-24 overflow-y-auto no-scrollbar">
