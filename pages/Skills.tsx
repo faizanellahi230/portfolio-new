@@ -12,26 +12,14 @@ const Skills: React.FC = () => {
       let { data } = await supabase
         .from('skills')
         .select('*')
-        .order('level', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (data && data.length > 0) {
-        // Transform if needed. Assuming DB has: name, level, category. 
-        // DB might not have 'desc', 'img', 'tags' yet in schema plan? 
-        // Plan said: id, name, level, category.
-        // We need to map this to UI.
-        // For now, we might need to Mock the missing fields or rely on defaults if DB is simple.
-        // OR we update schema plan to include these?
-        // User wanted "Projects title, desc, img, gallery, tools, category, link".
-        // Skills: "Skill name, proficiency, category".
-        // UI shows: Name, Desc, Img, Tags, Progress.
-        // Data in DB is minimal. I will map what I can and use placeholders or hide others.
-
         const transformed = data.map(s => ({
           name: s.name,
-          desc: s.description || s.category + " tool",
+          desc: s.description || '',
           img: s.image_url || "/placeholder_icon.png",
-          tags: s.tags || [s.category],
-          progress: (s.level || 0) + "%"
+          tags: s.tags || []
         }));
         setTools(transformed);
       } else {

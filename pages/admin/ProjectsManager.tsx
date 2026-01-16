@@ -9,7 +9,10 @@ interface Project {
     category: string;
     thumbnail_url: string;
     images?: string[];
-    tools: string[];
+    year?: string;
+    client?: string;
+    role?: string;
+    order_index?: number;
     tags?: string[];
     created_at?: string;
 }
@@ -24,13 +27,10 @@ const ProjectsManager: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('All');
 
-    // Tag/Tools Input State
-    const [toolInput, setToolInput] = useState('');
-    const toolInputRef = useRef<HTMLInputElement>(null);
-
     // Media Upload State
     const [uploadingHero, setUploadingHero] = useState(false);
     const [uploadingGallery, setUploadingGallery] = useState(false);
+    const [isReordering, setIsReordering] = useState(false);
 
     useEffect(() => {
         fetchProjects();
@@ -41,9 +41,23 @@ const ProjectsManager: React.FC = () => {
         const { data } = await supabase
             .from('projects')
             .select('*')
+            .order('order_index', { ascending: true })
             .order('created_at', { ascending: false });
 
-        if (data) setProjects(data);
+        if (data) {
+            // Ensure every project has an order_index if it's missing (one-time fix)
+            const needsFix = data.some(p => p.order_index === null || p.order_index === undefined);
+            if (needsFix) {
+                const fixedData = data.map((p, i) => ({
+                    ...p,
+                    order_index: p.order_index ?? i
+                }));
+                // We don't necessarily update DB here to avoid loops, but we use it for UI
+                setProjects(fixedData);
+            } else {
+                setProjects(data);
+            }
+        }
         setLoading(false);
     };
 
@@ -62,7 +76,10 @@ const ProjectsManager: React.FC = () => {
             category: currentProject.category,
             thumbnail_url: currentProject.thumbnail_url,
             images: currentProject.images || [],
-            tools: currentProject.tools || [],
+            year: currentProject.year || '',
+            client: currentProject.client || '',
+            role: currentProject.role || '',
+            order_index: currentProject.order_index ?? projects.length,
         };
 
         let error;
@@ -77,7 +94,6 @@ const ProjectsManager: React.FC = () => {
         if (!error) {
             setIsEditing(false);
             setCurrentProject({});
-            setToolInput('');
             fetchProjects();
         } else {
             alert('Error saving project: ' + error.message);
@@ -103,7 +119,11 @@ const ProjectsManager: React.FC = () => {
 
             const { data } = supabase.storage.from('portfolio').getPublicUrl(filePath);
             if (data) {
-                setCurrentProject({ ...currentProject, thumbnail_url: data.publicUrl });
+                setCurrentProject({
+                    ...currentProject,
+                    thumbnail_url: data.publicUrl,
+                    images: [...(currentProject.images || []), data.publicUrl]
+                });
             }
         } catch (error: any) {
             alert('Error uploading hero media: ' + error.message);
@@ -146,30 +166,51 @@ const ProjectsManager: React.FC = () => {
         }
     };
 
-    // Tag Operations
-    const handleToolKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            if (toolInput.trim()) {
-                const newTools = [...(currentProject.tools || []), toolInput.trim()];
-                setCurrentProject({ ...currentProject, tools: newTools });
-                setToolInput('');
-            }
-        } else if (e.key === 'Backspace' && !toolInput && currentProject.tools?.length) {
-            const newTools = currentProject.tools.slice(0, -1);
-            setCurrentProject({ ...currentProject, tools: newTools });
+
+
+    const handleMove = async (index: number, direction: 'up' | 'down') => {
+        try {
+            setIsReordering(true);
+            const newIndex = direction === 'up' ? index - 1 : index + 1;
+            if (newIndex < 0 || newIndex >= filteredProjects.length) return;
+
+            // Create a copy of the current filtered projects list and swap the items
+            const newOrderedList = [...filteredProjects];
+            const [movedItem] = newOrderedList.splice(index, 1);
+            newOrderedList.splice(newIndex, 0, movedItem);
+
+            // Important: We need to update the order_index for ALL projects in this new sequence
+            // to ensure they have unique, sequential values (0, 1, 2...)
+            const updates = newOrderedList.map((project, i) => {
+                return supabase
+                    .from('projects')
+                    .update({ order_index: i })
+                    .eq('id', project.id);
+            });
+
+            const results = await Promise.all(updates);
+            const firstError = results.find(r => r.error)?.error;
+
+            if (firstError) throw firstError;
+
+            await fetchProjects();
+        } catch (error: any) {
+            console.error("Reorder Error:", error);
+            alert(`Reordering failed: ${error.message}. TIP: If this is the first time, make sure you ran the SQL command to add the 'order_index' column.`);
+        } finally {
+            setIsReordering(false);
         }
     };
 
-    const removeTool = (indexToRemove: number) => {
-        const newTools = (currentProject.tools || []).filter((_, index) => index !== indexToRemove);
-        setCurrentProject({ ...currentProject, tools: newTools });
+    const isVideo = (url?: string) => {
+        if (!url) return false;
+        const videoExtensions = ['.mp4', '.webm', '.mov', '.ogg'];
+        return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
     };
 
     const filteredProjects = projects.filter(project => {
         const titleMatch = project.title?.toLowerCase().includes(searchQuery.toLowerCase());
-        const toolsMatch = project.tools?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
-        const matchesSearch = titleMatch || toolsMatch;
+        const matchesSearch = titleMatch;
         const matchesCategory = categoryFilter === 'All' || project.category === categoryFilter;
         return matchesSearch && matchesCategory;
     });
@@ -239,7 +280,7 @@ const ProjectsManager: React.FC = () => {
                         </h2>
                     </div>
                     <button
-                        onClick={() => { setCurrentProject({}); setToolInput(''); setIsEditing(true); }}
+                        onClick={() => { setCurrentProject({}); setIsEditing(true); }}
                         className="group bg-white text-black font-bold px-8 py-4 rounded-full text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-primary transition-all shadow-xl shadow-white/5 hover:shadow-primary/20 active:scale-95"
                     >
                         <span className="material-icons-round text-lg group-hover:rotate-90 transition-transform">add</span>
@@ -273,43 +314,76 @@ const ProjectsManager: React.FC = () => {
 
                 {/* Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {filteredProjects.map((project) => (
+                    {filteredProjects.map((project, index) => (
                         <div key={project.id} className="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all hover:border-primary/30 hover:shadow-[0_0_30px_-10px_rgba(6,249,241,0.1)]">
-                            <div className="aspect-video overflow-hidden relative">
+                            <div className="aspect-video overflow-hidden relative bg-black/50">
                                 {project.thumbnail_url ? (
-                                    <img src={project.thumbnail_url} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                    isVideo(project.thumbnail_url) ? (
+                                        <video src={project.thumbnail_url} className="w-full h-full object-cover" muted playsInline loop autoPlay />
+                                    ) : (
+                                        <img src={project.thumbnail_url} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                    )
                                 ) : (
-                                    <div className="w-full h-full bg-white/10 flex items-center justify-center text-white/20">NO MEDIA</div>
+                                    <div className="w-full h-full flex items-center justify-center text-white/20">NO MEDIA</div>
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                                     <div className="flex gap-2">
-                                        <button onClick={() => { setCurrentProject(project); setToolInput(''); setIsEditing(true); }} className="bg-white text-black p-3 rounded-full hover:bg-primary transition-colors">
+                                        <button onClick={() => { setCurrentProject(project); setIsEditing(true); }} className="bg-white text-black p-3 rounded-full hover:bg-primary transition-colors">
                                             <span className="material-icons-round">edit</span>
                                         </button>
                                         <button onClick={() => handleDelete(project.id)} className="bg-red-500 text-white p-3 rounded-full hover:bg-red-600 transition-colors">
                                             <span className="material-icons-round">delete_outline</span>
                                         </button>
                                     </div>
+                                    {/* Reorder Controls */}
+                                    <div className={`flex flex-col gap-1 ml-auto ${isReordering ? 'opacity-20 pointer-events-none' : ''}`}>
+                                        <button
+                                            type="button"
+                                            disabled={index === 0}
+                                            onClick={(e) => { e.stopPropagation(); handleMove(index, 'up'); }}
+                                            className="bg-white/10 hover:bg-primary hover:text-black p-1.5 rounded-md transition-colors disabled:opacity-20 disabled:pointer-events-none"
+                                        >
+                                            <span className="material-icons-round text-sm">keyboard_arrow_up</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            disabled={index === filteredProjects.length - 1}
+                                            onClick={(e) => { e.stopPropagation(); handleMove(index, 'down'); }}
+                                            className="bg-white/10 hover:bg-primary hover:text-black p-1.5 rounded-md transition-colors disabled:opacity-20 disabled:pointer-events-none"
+                                        >
+                                            <span className="material-icons-round text-sm">keyboard_arrow_down</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                {/* Year Stamp on Image */}
+                                <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-white/10 px-2 py-1 rounded-lg z-10 pointer-events-none">
+                                    <span className="text-[10px] font-bold text-primary tracking-widest">{project.year || '2024'}</span>
                                 </div>
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-4">
                                     <h3 className="text-lg font-bold uppercase tracking-tight text-white">{project.title}</h3>
-                                    <span className="text-[10px] font-bold text-primary border border-primary/30 px-2 py-0.5 rounded">
-                                        {project.created_at ? new Date(project.created_at).getFullYear() : '2024'}
-                                    </span>
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                     <span className="bg-white/5 text-[9px] font-bold uppercase px-2 py-1 rounded text-slate-400 border border-white/5">{project.category}</span>
-                                    {project.tools?.slice(0, 3).map((tool, i) => (
-                                        <span key={i} className="bg-white/5 text-[9px] font-bold uppercase px-2 py-1 rounded text-primary border border-primary/10">{tool}</span>
-                                    ))}
+                                </div>
+                                <div className="mt-4 pt-4 border-t border-white/5 space-y-1">
+                                    {project.client && (
+                                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex justify-between">
+                                            <span>Client:</span> <span className="text-white/60 tracking-normal">{project.client}</span>
+                                        </p>
+                                    )}
+                                    {project.role && (
+                                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex justify-between">
+                                            <span>Role:</span> <span className="text-white/60 tracking-normal">{project.role}</span>
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     ))}
                     <button
-                        onClick={() => { setCurrentProject({}); setToolInput(''); setIsEditing(true); }}
+                        onClick={() => { setCurrentProject({}); setIsEditing(true); }}
                         className="group flex flex-col items-center justify-center gap-4 min-h-[300px] border-2 border-dashed border-white/10 rounded-2xl hover:border-primary transition-all hover:bg-primary/5"
                     >
                         <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-colors">
@@ -343,19 +417,21 @@ const ProjectsManager: React.FC = () => {
                                         </label>
                                         <div className="aspect-video bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group">
                                             {currentProject.thumbnail_url ? (
-                                                <>
+                                                isVideo(currentProject.thumbnail_url) ? (
+                                                    <video src={currentProject.thumbnail_url} className="w-full h-full object-cover" controls />
+                                                ) : (
                                                     <img src={currentProject.thumbnail_url} className="w-full h-full object-cover" />
-                                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                                        <label htmlFor="hero-upload" className="cursor-pointer bg-white text-black text-[10px] font-bold px-4 py-2 rounded-lg hover:bg-primary transition-colors">CHANGE</label>
-                                                        <button type="button" onClick={() => setCurrentProject({ ...currentProject, thumbnail_url: '' })} className="bg-red-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">REMOVE</button>
-                                                    </div>
-                                                </>
+                                                )
                                             ) : (
-                                                <label htmlFor="hero-upload" className="cursor-pointer flex flex-col items-center gap-2 group-hover:text-primary transition-colors">
-                                                    <span className="material-icons-round text-3xl">add_photo_alternate</span>
-                                                    <span className="text-[10px] font-bold uppercase tracking-widest">Add Hero Media</span>
-                                                </label>
+                                                <div className="w-full h-full flex flex-col items-center justify-center text-slate-500 gap-2">
+                                                    <span className="material-icons-round text-3xl">image</span>
+                                                    <span className="text-[10px] font-bold uppercase tracking-widest">No Media Selected</span>
+                                                </div>
                                             )}
+                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/hero:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                                <label htmlFor="hero-upload" className="cursor-pointer bg-white text-black text-[10px] font-bold px-4 py-2 rounded-lg hover:bg-primary transition-colors">CHANGE</label>
+                                                <button type="button" onClick={() => setCurrentProject({ ...currentProject, thumbnail_url: '' })} className="bg-red-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">REMOVE</button>
+                                            </div>
                                             <input type="file" id="hero-upload" accept="image/*,video/*" onChange={handleHeroUpload} className="hidden" />
                                         </div>
                                     </div>
@@ -368,9 +444,13 @@ const ProjectsManager: React.FC = () => {
                                         </label>
                                         <div className="grid grid-cols-3 gap-2">
                                             {currentProject.images?.map((url, i) => (
-                                                <div key={i} className="aspect-square bg-white/5 rounded-xl border border-white/10 relative group overflow-hidden">
-                                                    <img src={url} className="w-full h-full object-cover" />
-                                                    <button type="button" onClick={() => setCurrentProject({ ...currentProject, images: (currentProject.images || []).filter((_, idx) => idx !== i) })} className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div key={i} className="aspect-video bg-black/50 rounded-lg overflow-hidden border border-white/5 relative group/item">
+                                                    {isVideo(url) ? (
+                                                        <video src={url} className="w-full h-full object-cover" muted playsInline loop autoPlay />
+                                                    ) : (
+                                                        <img src={url} className="w-full h-full object-cover" />
+                                                    )}
+                                                    <button type="button" onClick={() => setCurrentProject({ ...currentProject, images: (currentProject.images || []).filter((_, idx) => idx !== i) })} className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-md opacity-0 group-hover/item:opacity-100 transition-opacity">
                                                         <span className="material-icons-round text-[12px]">close</span>
                                                     </button>
                                                 </div>
@@ -397,6 +477,22 @@ const ProjectsManager: React.FC = () => {
                                     </div>
                                 </div>
 
+                                {/* Metadata Fields: Date, Client, Role */}
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Date / Year</label>
+                                        <input className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-primary outline-none transition-all" value={currentProject.year || ''} onChange={e => setCurrentProject({ ...currentProject, year: e.target.value })} placeholder="e.g. 2024" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Client Name</label>
+                                        <input className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-primary outline-none transition-all" value={currentProject.client || ''} onChange={e => setCurrentProject({ ...currentProject, client: e.target.value })} placeholder="e.g. Acme Corp" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Your Role</label>
+                                        <input className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-primary outline-none transition-all" value={currentProject.role || ''} onChange={e => setCurrentProject({ ...currentProject, role: e.target.value })} placeholder="e.g. Art Director" />
+                                    </div>
+                                </div>
+
                                 <div className="space-y-4">
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Mission Brief (Short Desc)</label>
@@ -406,31 +502,6 @@ const ProjectsManager: React.FC = () => {
                                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">In-Depth Intel (Long Desc)</label>
                                         <textarea className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-primary outline-none transition-all resize-none h-32" value={currentProject.description_long || ''} onChange={e => setCurrentProject({ ...currentProject, description_long: e.target.value })} />
                                     </div>
-                                </div>
-
-                                {/* Tags (Tools) Section */}
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Tags (Tools Used)</label>
-                                    <div className="tag-container h-auto min-h-[56px] transition-colors focus-within:border-primary">
-                                        {currentProject.tools?.map((tool, index) => (
-                                            <div key={index} className="tag-item animate-in zoom-in duration-200">
-                                                {tool}
-                                                <span className="tag-remove" onClick={() => removeTool(index)}>
-                                                    <span className="material-icons-round text-[12px]">close</span>
-                                                </span>
-                                            </div>
-                                        ))}
-                                        <input
-                                            type="text"
-                                            id="tag-input"
-                                            ref={toolInputRef}
-                                            value={toolInput}
-                                            onChange={(e) => setToolInput(e.target.value)}
-                                            onKeyDown={handleToolKeyDown}
-                                            placeholder={currentProject.tools?.length ? '' : "Type and press Enter..."}
-                                        />
-                                    </div>
-                                    <p className="text-[10px] text-slate-500">Add tools like Cinema 4D, React, Octane. Only adds on Enter.</p>
                                 </div>
                             </form>
                         </div>

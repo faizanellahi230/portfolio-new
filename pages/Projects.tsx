@@ -1,44 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Projects: React.FC = () => {
-  const [filter, setFilter] = useState('All');
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [categoryFilter, setCategoryFilter] = useState('All');
 
   const categories = ['All', '3D Scene', 'Character', 'Motion', 'Environment', 'Product'];
 
-  /* Supabase Integration */
-  const [projects, setProjects] = useState<any[]>([]);
-  const [dbLoading, setDbLoading] = useState(true);
+  const isVideo = (url?: string) => {
+    if (!url) return false;
+    const videoExtensions = ['.mp4', '.webm', '.mov', '.ogg'];
+    return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
+  };
 
-  React.useEffect(() => {
+  /* Supabase Integration */
+  useEffect(() => {
     const fetchProjects = async () => {
       const { supabase } = await import('../lib/supabase');
       let { data, error } = await supabase
         .from('projects')
         .select('*')
+        .order('order_index', { ascending: true })
         .order('created_at', { ascending: false });
 
       if (data) {
-        // Transform simple array if needed, assuming DB matches structure mostly
-        // If DB stores 'tools' as string array, and we need categories..
-        // Assuming DB fields: id, title, category, description_short (mapped to desc), description_long (mapped to longDesc), thumbnail_url (img), images (gallery), external_link
-        const transformed = data.map(p => ({
-          ...p,
+        const formattedData = data.map(p => ({
+          title: p.title,
+          category: p.category,
           desc: p.description_short,
           longDesc: p.description_long,
           img: p.thumbnail_url,
-          gallery: p.images ? p.images.map((url: string) => ({ type: 'image', url })) : []
+          video: isVideo(p.thumbnail_url) ? p.thumbnail_url : null,
+          gallery: p.images ? p.images.map((url: string) => ({
+            type: isVideo(url) ? 'video' : 'image',
+            url: url
+          })) : [],
+          year: p.year,
+          client: p.client,
+          role: p.role
         }));
-        setProjects(transformed);
+        setProjects(formattedData);
       }
-      setDbLoading(false);
+      setLoading(false);
     };
     fetchProjects();
   }, []);
-  /* End Supabase Integration */
 
-  const filteredProjects = filter === 'All' ? projects : projects.filter(p => p.category === filter);
+  const filteredProjects = categoryFilter === 'All' ? projects : projects.filter(p => p.category === categoryFilter);
 
   return (
     <div className="w-full px-6 lg:px-20 py-12 pt-32 h-full overflow-y-auto no-scrollbar">
@@ -58,8 +68,11 @@ const Projects: React.FC = () => {
         {categories.map(cat => (
           <button
             key={cat}
-            onClick={() => setFilter(cat)}
-            className={`h-12 px-8 rounded-full text-base font-bold transition-all whitespace-nowrap ${filter === cat ? 'bg-primary text-background-dark' : 'bg-white/5 border border-white/10 text-white/70 hover:text-white backdrop-blur-sm'}`}
+            onClick={() => setCategoryFilter(cat)}
+            className={`h-12 px-8 rounded-full text-sm font-bold transition-all whitespace-nowrap ${categoryFilter === cat
+                ? 'bg-primary text-black'
+                : 'bg-white/5 border border-white/10 text-white/70 hover:text-white backdrop-blur-sm'
+              }`}
           >
             {cat}
           </button>
@@ -71,7 +84,7 @@ const Projects: React.FC = () => {
           <article key={i} className="group relative w-full aspect-video bg-white/[0.03] backdrop-blur-md rounded-[3rem] border border-white/10 p-[24px] overflow-hidden transition-all hover:border-primary/50">
             {/* Year Stamp - Visible in the cut corner */}
             <div className="absolute top-8 right-8 z-0">
-              <span className="text-white/40 font-mono text-sm tracking-widest">2024</span>
+              <span className="text-white/40 font-mono text-sm tracking-widest">{proj.year || '2024'}</span>
             </div>
 
             {/* Clipped Image Container */}
@@ -83,7 +96,11 @@ const Projects: React.FC = () => {
                 WebkitClipPath: 'polygon(0 0, calc(100% - 165px) 0, calc(100% - 154px) 2px, calc(100% - 140px) 10px, calc(100% - 10px) 140px, calc(100% - 2px) 154px, 100% 165px, 100% 100%, 0 100%)'
               }}
             >
-              <div className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url('${proj.img}')` }}></div>
+              {isVideo(proj.img) ? (
+                <video src={proj.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" muted playsInline loop autoPlay />
+              ) : (
+                <div className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url('${proj.img}')` }}></div>
+              )}
 
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80"></div>
@@ -195,7 +212,7 @@ const ProjectOverlay: React.FC<{ project: any, onClose: () => void }> = ({ proje
     {/* Project Gallery Section - Vertical Scrolling */}
     <section className="relative z-10 w-full px-10 lg:px-24 py-32 space-y-24 bg-black">
       <div className="max-w-5xl mx-auto space-y-24">
-        {project.gallery ? project.gallery.map((item: any, i: number) => (
+        {project.gallery && project.gallery.length > 0 ? project.gallery.map((item: any, i: number) => (
           <div
             key={i}
             className="relative rounded-[2.5rem] overflow-hidden border border-white/5 bg-white/[0.02] w-full"

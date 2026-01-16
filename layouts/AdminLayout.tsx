@@ -93,7 +93,7 @@ const AdminLayout: React.FC = () => {
             </aside>
 
             {/* Main Content */}
-            <main className="ml-64 p-10 min-h-screen">
+            <main className="ml-64 p-10 h-screen overflow-y-auto custom-scrollbar relative">
                 <Outlet />
             </main>
         </div>
